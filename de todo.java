@@ -175,8 +175,18 @@ desplegarIngerfaz(){
 	02 depositos
 	03 extracciones
 	04 transferencias
+	05 revertirMovimiento
+
 
 	Scanner
+
+	obtenerAlias(){
+
+
+		01 CuentaCorriente aliastanto
+		02 CajaDeAhorro 
+		03 CajaDeAhorro
+	}
 
 	if numero == 01:
 		Scanner alias sacamos la plata cc ca
@@ -204,107 +214,204 @@ desplegarIngerfaz(){
 }
 
 
-comprarDolares(cuenta1,cuenta2,monto){
+//agregar movimiento a la lista movimientos del cliente
+//buscar las cuentas de la listaCuentas con el alias desde menu
 
 
-	objetoComprarDolares().transferir(cuenta1,cuenta2,montoDolares);
+agregarMovimientoClase{
 
-	// objetoTransferencia().transferir(cuenta1,cuenta2,monto);
-	// objetoTransferencia().transferir(cuenta1,cuenta2,monto,objetoExtraccion,objetoDeposito);
-	// objetoExtraccion
-	// objetoDeposito
+
+	agregarMovimiento(Lista,elMovimiento){
+
+
+	}
+
 }
 
 
-
-
-
-
-transfererir(Cuenta cuenta1, Cuenta cuenta2, double montoDolares){
-
-	cuenta1.sacarSaldo(cambio de dolares a pesos)
-	cuenta2.ponerSaldo(montoDolares)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-transfererir(cuenta1,cuenta2,montoDolares,objetoExtraccion,objetoDeposito){
-
-	// cambio de dolar a peso
-
-	objetoExtraccion.extraerFondos(cuenta1,montoPesos);
-	objetoDeposito.despositar(cuenta2.montoDolares);
-}
-
-
-transfererir(cuenta1,cuenta2,montoDolares){
-
-	cuenta1.sacarSaldo(cambio de dolares a pesos)
-	cuenta2.ponerSaldo(montoDolares)
-}
-
-
-transfererir(cuenta1,cuenta2,monto){
-
-	cuenta1.sacarSaldo(pesos)
-	cuenta2.ponerSaldo(pesos)
-}
-
-
-
-
-
-
-
-
-
-retirarEfectivo{
-
+extraerFondosMenu(cuenta1,monto){
 
 	objetoExtraccion().extraerFondos(cuenta1,monto)
-	// el usuario ingresa el alias con un Scanner
-	// buscamos a que cuenta pertenece ese alias
-	atm.realizarTransaccion().transferencia(cuenta1,cuenta2,monto)
-	atm.realizarTransaccion().extraccion(cuenta1,monto);
+	
+
+	String movimento = fecha + hora + cuenta.getAlias() + "extraccion" + monto + cuenta1.getSaldo()
+
+
+	HistorialMovimiento().agregarMovimiento(cuenta1.getLista(),movimiento);
+	HistorialMovimiento().agregarMovimiento(cajero.getCliente().getLista(),movimiento);
+
+	imprimirTicket(movimiento);
+}
+
+
+agregarMovimiento(lista,movimiento){
+
+	lista.add(movimiento);
+}
+
+
+extraerFondosOperaciones(cuenta1,monto){
+
+	cuenta1.extraerFondos(monto);
+
+
+	
+}
+//agregamos el movimiento a la lista (String)
+//pedimos el ticket
+
+//Ticket: fecha,hora,cuenta,tipoTransaccion,importeInvolucrado,nuevoSaldo	
+lista cuenta1 = 
+
+imprimirTicket(){
+
+	
+	movimentos.split
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+revertirMovimiento(){
+
+	// lista de movimentos de cliente
+
+	List<String> movimentos = cajero.getCliente().getMovimientos();
+
+	if(movimentos indice ultimo == transferencia){
+
+		String alias1 = movimentos[ante ultimo].split[","][3]
+		String alias2 = movimentos[ultimo].split[","][3]
+		
+		lista[cuenta que le sacan, cuenta a la que le deposita]
+
+		Cuenta cuenta1 = cajero.getCliente().devolverCuenta(alias1);
+		Cuenta cuenta2 = cajero.getCliente().devolverCuenta(alias2);
+
+		revertirMovimientoInterfaz(cuenta1,cuenta2);
+	}
 
 }
 
-setSaldo(monto){
+revertirMovimientoInterfaz(cuenta1,cuenta2){
 
-	saldo += monto;
-	agregarMovimiento()
+	cuenta1.setSaldo(cuenta1.getSaldoPrevio());
+	cuenta2.setSaldo(cuenta2.getSaldoPrevio());
 }
 
 
 
+// comprarDolares(cuenta1,cuenta2,monto){
 
-extraerFondos(cuenta1,monto){
 
-	ejecutar(cuenta1,monto);
-}
+// 	objetoComprarDolares().transferir(cuenta1,cuenta2,montoDolares);
 
-ejecutar(cuenta1,monto){
+// 	// objetoTransferencia().transferir(cuenta1,cuenta2,monto);
+// 	// objetoTransferencia().transferir(cuenta1,cuenta2,monto,objetoExtraccion,objetoDeposito);
+// 	// objetoExtraccion
+// 	// objetoDeposito
+// }
 
-	cuenta1.setSaldo(monto);
-}
+
+
+
+
+
+// transfererir(Cuenta cuenta1, Cuenta cuenta2, double montoDolares){
+
+// 	cuenta1.sacarSaldo(cambio de dolares a pesos)
+// 	cuenta2.ponerSaldo(montoDolares)
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// transfererir(cuenta1,cuenta2,montoDolares,objetoExtraccion,objetoDeposito){
+
+// 	// cambio de dolar a peso
+
+// 	objetoExtraccion.extraerFondos(cuenta1,montoPesos);
+// 	objetoDeposito.despositar(cuenta2.montoDolares);
+// }
+
+
+// transfererir(cuenta1,cuenta2,montoDolares){
+
+// 	cuenta1.sacarSaldo(cambio de dolares a pesos)
+// 	cuenta2.ponerSaldo(montoDolares)
+// }
+
+
+// transfererir(cuenta1,cuenta2,monto){
+
+// 	cuenta1.sacarSaldo(pesos)
+// 	cuenta2.ponerSaldo(pesos)
+// }
+
+
+
+
+
+
+
+
+
+// retirarEfectivo{
+
+
+// 	objetoExtraccion().extraerFondos(cuenta1,monto)
+// 	// el usuario ingresa el alias con un Scanner
+// 	// buscamos a que cuenta pertenece ese alias
+// 	atm.realizarTransaccion().transferencia(cuenta1,cuenta2,monto)
+// 	atm.realizarTransaccion().extraccion(cuenta1,monto);
+
+// }
+
+// setSaldo(monto){
+
+// 	saldo += monto;
+// 	agregarMovimiento()
+// }
+
+
+
+// // definido en menu
+
+
+
+//dentro de operacion
 
 extraccion(cuenta1,monto){
 
-
+	// acceso a las cuetnas que le pasamos por parametro
 	cuenta1.getSaldo(monto);
+	// cuenta1.agregarMovimiento("extraccion",monto,cuenta1.getSaldo());
+	//agregar a la lista de movimientos del cliente
+
+
 }		
 
 //saldo = 900
