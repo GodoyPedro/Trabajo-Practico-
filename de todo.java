@@ -132,8 +132,17 @@ El nuevo saldo de la cuenta: cuentaRecibe[n] es cuentaRecibe[n]
 
 
 
+depositar(plata){
+
+	saldo += plata
+}
+
+new Transaccion.depositar(cuenta,monto){
+
+	cuenta.setSaldo(monto)
 
 
+}
 
 /*
 	
@@ -169,29 +178,215 @@ desplegarIngerfaz(){
 
 	Scanner
 
+	if numero == 01:
+		Scanner alias sacamos la plata cc ca
+		Scanner alias ponemos la plata cad
+		Scanner
+		comprarDolares(alias1,alias2,monto);
+
+
 	if numero == 03:
+		Scanner alias
+
 		Scanner
-		Scanner
-		extraerFondos(alias,monto);
+		retirarEfectivo(alias,monto);
 
 	if numero == 02:
 		Scanner
 		Scanner
 		depositarFondos(alias,monto);
 
-	if numero == 01:
+	if numero == 04:
 		Scanner
 		Scanner
 		Scanner
 		realizarTransferencia(alias1,alias2,monto);
 }
 
+
+comprarDolares(cuenta1,cuenta2,monto){
+
+
+	objetoComprarDolares().transferir(cuenta1,cuenta2,montoDolares);
+
+	// objetoTransferencia().transferir(cuenta1,cuenta2,monto);
+	// objetoTransferencia().transferir(cuenta1,cuenta2,monto,objetoExtraccion,objetoDeposito);
+	// objetoExtraccion
+	// objetoDeposito
+}
+
+
+
+
+
+
+transfererir(Cuenta cuenta1, Cuenta cuenta2, double montoDolares){
+
+	cuenta1.sacarSaldo(cambio de dolares a pesos)
+	cuenta2.ponerSaldo(montoDolares)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+transfererir(cuenta1,cuenta2,montoDolares,objetoExtraccion,objetoDeposito){
+
+	// cambio de dolar a peso
+
+	objetoExtraccion.extraerFondos(cuenta1,montoPesos);
+	objetoDeposito.despositar(cuenta2.montoDolares);
+}
+
+
+transfererir(cuenta1,cuenta2,montoDolares){
+
+	cuenta1.sacarSaldo(cambio de dolares a pesos)
+	cuenta2.ponerSaldo(montoDolares)
+}
+
+
+transfererir(cuenta1,cuenta2,monto){
+
+	cuenta1.sacarSaldo(pesos)
+	cuenta2.ponerSaldo(pesos)
+}
+
+
+
+
+
+
+
+
+
+retirarEfectivo{
+
+
+	objetoExtraccion().extraerFondos(cuenta1,monto)
+	// el usuario ingresa el alias con un Scanner
+	// buscamos a que cuenta pertenece ese alias
+	atm.realizarTransaccion().transferencia(cuenta1,cuenta2,monto)
+	atm.realizarTransaccion().extraccion(cuenta1,monto);
+
+}
+
+setSaldo(monto){
+
+	saldo += monto;
+	agregarMovimiento()
+}
+
+
+
+
+extraerFondos(cuenta1,monto){
+
+	ejecutar(cuenta1,monto);
+}
+
+ejecutar(cuenta1,monto){
+
+	cuenta1.setSaldo(monto);
+}
+
+extraccion(cuenta1,monto){
+
+
+	cuenta1.getSaldo(monto);
+}		
+
+//saldo = 900
+cuentaCorriente{ // descubierto = 100
+ 	
+ 	getSaldo(monto){
+
+ 		if(this.saldo+this.descubierto >= monto){
+
+ 			saldo -= monto
+ 		}
+
+ 		return monto
+ 	}
+	
+}
+
+//saldo = 900
+cajaAhorro{
+ 	
+ 	getSaldo(monto){
+
+	 	if(saldo <= monto){
+
+	 		return monto
+
+	 	}else{
+
+	 		error
+	 	}
+	}
+}
+
+//saldo = 900
+cajaAhorroDolares{
+ 
+	getSaldo(monto){
+
+	 	if(saldo <= monto){
+
+	 		return monto
+
+	 	}else{
+
+	 		error
+	 	}
+	}
+}
+
+//cuenta1 es de tipo cc
+atm.realizarTransaccion().extraccion(cuenta1,1000) //esto lo puedo hacer
+
+//cuenta1 es de tipo ca
+atm.realizarTransaccion().extraccion(cuenta1,1000) //esto NO lo puedo hacer
+
+//cuenta1 es de tipo cad
+atm.realizarTransaccion().extraccion(cuenta1,1000) //esto NO lo puedo hacer
+
+
+
+
+
+
+
+
+
 realizarTransferencia(alias1,alias2,monto){
 
 	cuenta1 = atm.getCliente().devolverCuenta(alias1);
 	cuenta2 = atm.getCliente().devolverCuenta(alias2);
 
-	cuenta1.transferir(cuenta2,monto);
+	Transfrencia objetoTransaccion = new Transfrencia()
+
+	objetoTransaccion.transferir(cuenta1,cuenta2,monto);
+	atm.realizarTransaccion().transferir(cuenta1,cuenta2,monto);
+	atm.realizarTransaccion().desposito(cuenta1,monto);
+
+	deposito{
+
+		cuenta1.setSaldo (monto)
+	}
+	// cuenta1.transferir(cuenta2,monto);
 
 }
 
@@ -302,7 +497,14 @@ public Cliente(cuit){
 }
 
 
+Cajero{
 
+	Operacion objetoTra = new Transferencia()
+	Operacion objetoDep = new Deposito()
+	Operacion objetoCons = new ConsultarSaldo()
+	Operacion objetoExt = new Extraccion()
+
+}
 
 
 
