@@ -1,0 +1,56 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
+public class FechaYHora {
+
+	private String fecha;
+	private String hora;
+	
+
+	public static void main(String [] args) {
+		
+		FechaYHora d = new FechaYHora();
+		d.getHora();
+		d.getFecha();
+	}
+	/**
+	 * post: Se marca la fecha y hora en que se realiza la operacion
+	 * @param fecha
+	 * @param hora
+	 */
+	public FechaYHora() {
+		
+		SimpleDateFormat dia =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		TimeZone horario = TimeZone.getTimeZone("America/Argentina/Buenos_Aires");
+		dia.setTimeZone(horario);
+		
+		String nowAsISO = dia.format(new Date());
+		String[] fechaYHora = nowAsISO.split(" ");
+		
+		this.fecha = fechaYHora[0];
+		this.hora = fechaYHora[1];
+		
+	}
+	
+
+	/**
+	 * 
+	 * @return hora
+	 */
+	
+	public String getHora() {
+		
+	
+		return hora;
+	}
+	
+	
+	/**
+	 * @return fecha
+	 */
+	public String getFecha() {
+		
+		return fecha;
+	}
+}
