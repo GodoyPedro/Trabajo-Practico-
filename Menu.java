@@ -342,7 +342,7 @@ public class Menu {
 
 		Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
 
-		((ConsultarSaldo) operaciones[4]).consultarSaldo(cuenta);
+		System.out.println(((ConsultarSaldo) operaciones[4]).consultarSaldo(cuenta));
 
 	}
 
