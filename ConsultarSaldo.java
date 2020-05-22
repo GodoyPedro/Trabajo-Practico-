@@ -1,5 +1,4 @@
 package predeterminado;
-
 public class ConsultarSaldo extends Operacion {
 	
 	public double consultarSaldo(Cuenta cuenta) {
@@ -8,3 +7,5 @@ public class ConsultarSaldo extends Operacion {
 		
 	}
 }
+
+
