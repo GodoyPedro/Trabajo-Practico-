@@ -1,9 +1,10 @@
 package predeterminado;
 
+
 public class Transferencia extends Operacion implements Reversible {
 	
 	
-	public void transferir(Cuenta cuenta1, Cuenta cuenta2, double montoATransferir) {
+	public void transferir(Cuenta cuenta1, Cuenta cuenta2, double montoATransferir) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo {
 		
 		cuenta1.quitarSaldo(montoATransferir);
 		cuenta2.agregarSaldo(montoATransferir);
@@ -18,5 +19,4 @@ public class Transferencia extends Operacion implements Reversible {
 		}
 
 	}
-	
 }
