@@ -221,78 +221,121 @@ public class Menu {
 
 	private void retirarEfectivo(String alias, double monto) {
 
-		Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
-		((Extraccion) operaciones[0]).extraerFondos(cuenta, monto);
+		try {
 
-		String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
-				+ "Extraccion" + "," + monto + "," + cuenta.obtenerSaldo();
+			Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
+			((Extraccion) operaciones[0]).extraerFondos(cuenta, monto);
 
-		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
-		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
-				movimiento);
+			String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
+					+ "Extraccion" + "," + monto + "," + cuenta.obtenerSaldo();
 
-//		cajero.imprimirTicket(movimiento);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
+					movimiento);
+
+			//		cajero.imprimirTicket(movimiento);
+		}
+		catch (ErrorSaldoInsuficiente e) {
+			
+			System.err.println("El saldo de la cuenta es insuficiente para realizar esta operación");
+			
+		}
+		catch (ErrorAlIntroducirSaldo e) {
+			
+			System.err.println("El saldo introducido no es válido");
+			
+		}
 	}
 
 	private void comprarDolares(String alias, String aliasDolares, double dolares) {
 
-		Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
-		Cuenta cuentaDolares = cajero.getCliente().devolverCuenta(aliasDolares);
+		try {
 
-		((ComprarDolares) operaciones[3]).comprarDolares(cuenta, cuentaDolares, dolares);
+			Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
+			Cuenta cuentaDolares = cajero.getCliente().devolverCuenta(aliasDolares);
 
-		String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
-				+ "Compra Dolares" + "," + dolares + "," + cuenta.obtenerSaldo();
+			((ComprarDolares) operaciones[3]).comprarDolares(cuenta, cuentaDolares, dolares);
 
-		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
-		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuentaDolares.obtenerListaMovimientos(), movimiento);
-		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
-				movimiento);
+			String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
+					+ "Compra Dolares" + "," + dolares + "," + cuenta.obtenerSaldo();
 
-//
-//		cajero.imprimirTicket(movimiento);
-//		
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuentaDolares.obtenerListaMovimientos(), movimiento);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
+					movimiento);
+
+			//
+			//		cajero.imprimirTicket(movimiento);
+		}
+		catch (ErrorSaldoInsuficiente e) {
+
+			System.err.println("El saldo de la cuenta es insuficiente para realizar esta operación");
+
+		}
+		catch (ErrorAlIntroducirSaldo e) {
+
+			System.err.println("El saldo introducido no es válido");
+
+		}
 	}
 
 	private void depositarFondos(String alias, double monto) {
 
-		Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
-		((Deposito) operaciones[1]).depositar(cuenta, monto);
+		try {
 
-		String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
-				+ "Deposito" + "," + monto + "," + cuenta.obtenerSaldo();
+			Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
+			((Deposito) operaciones[1]).depositar(cuenta, monto);
 
-		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
-		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
-				movimiento);
+			String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
+					+ "Deposito" + "," + monto + "," + cuenta.obtenerSaldo();
 
-//		cajero.imprimirTicket(movimiento);
-//		
-//		
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
+					movimiento);
 
+			//		cajero.imprimirTicket(movimiento);
+		}
+		catch (ErrorAlIntroducirSaldo e) {
+
+			System.err.println("El saldo introducido no es válido");
+
+		}
 	}
 
 	private void realizarTransferencia(String alias, String aliasATransferir, double monto) {
+		
+		try {
 
-		Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
-		Cuenta cuentaATransferir = cajero.getCliente().devolverCuenta(aliasATransferir);
+			Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
+			Cuenta cuentaATransferir = cajero.getCliente().devolverCuenta(aliasATransferir);
 
-		((Transferencia) operaciones[2]).transferir(cuenta, cuentaATransferir, monto);
+			((Transferencia) operaciones[2]).transferir(cuenta, cuentaATransferir, monto);
 
-		String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
-				+ "Transferencia" + "," + (-monto) + "," + cuenta.obtenerSaldo();
-		String movimientoTransferido = cajero.obtenerFechaYHora().devolverFechaYHora() + ","
-				+ cuentaATransferir.obtenerAlias() + "," + "Transferencia" + "," + monto + ","
-				+ cuentaATransferir.obtenerSaldo();
+			String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
+					+ "Transferencia" + "," + (-monto) + "," + cuenta.obtenerSaldo();
+			String movimientoTransferido = cajero.obtenerFechaYHora().devolverFechaYHora() + ","
+					+ cuentaATransferir.obtenerAlias() + "," + "Transferencia" + "," + monto + ","
+					+ cuentaATransferir.obtenerSaldo();
 
-		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
-		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuentaATransferir.obtenerListaMovimientos(),
-				movimientoTransferido);
-		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(), movimiento);
-		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
-				movimientoTransferido);
-//
-//		cajero.imprimirTicket(movimiento);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuentaATransferir.obtenerListaMovimientos(),
+					movimientoTransferido);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(), movimiento);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
+					movimientoTransferido);
+
+			//		cajero.imprimirTicket(movimiento);
+		}
+		catch (ErrorSaldoInsuficiente e) {
+
+			System.err.println("El saldo de la cuenta es insuficiente para realizar esta operación");
+
+		}
+		catch (ErrorAlIntroducirSaldo e) {
+
+			System.err.println("El saldo introducido no es válido");
+
+		}
 	}
 
 	private void consultarSaldo(String alias) {
