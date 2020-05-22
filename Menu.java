@@ -1,4 +1,3 @@
-package predeterminado;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,7 +7,6 @@ public class Menu {
 
 	private Cajero cajero;
 	private Operacion[] operaciones;
-	
 
 	public Menu(Cajero cajero) {
 
@@ -47,6 +45,7 @@ public class Menu {
 		System.out.println("04 TRANSFERENCIAS");
 		System.out.println("05 CONSULTAR SALDO");
 		System.out.println("06 REVERTIR TRANSFERENCIA");
+		System.out.println("07 CERRAR SESION");
 
 		String eleccion;
 
@@ -73,11 +72,25 @@ public class Menu {
 		} else if (eleccion.equals("05")) {
 
 			imprimirMenuConsultas(escaner);
-		}
-		else if(eleccion.equals("06")) {
 			
+		} else if (eleccion.equals("06")) {
+
 			revertirTransferencia();
+			
+		} else if(eleccion.equals("07")) {
+			
+			cerrarSesion();
 		}
+
+	}
+
+	private void cerrarSesion() {
+	
+		System.out.println("       MUCHAS GRACIAS\n"
+				+ "NO OLVIDE RETIRAR SU TARJETA");
+		
+//		cajero.finalizarMovimientos();
+		
 	}
 
 	private void imprimirMenuConsultas(Scanner escaner) {
@@ -92,108 +105,50 @@ public class Menu {
 	}
 
 	private void imprimirMenuTransferencia(Scanner escaner) {
-		String eleccion;
+
 		generarSaltosDeLinea();
-		System.out.println("ELIJA LA CUENTA A DEBITAR\n");
-		System.out.println("01 CUENTA CORRIENTE");
-		System.out.println("02 CAJA DE AHORRO EN PESOS");
-
-		eleccion = escaner.nextLine();
-		double monto;
-
-		if (eleccion.equals("01")) {
-			generarSaltosDeLinea();
-			System.out.println("INGRESE EL ALIAS DE LA CUENTA CORRIENTE");
-			String alias = escaner.nextLine();
-			System.out.println("INGRESE EL ALIAS A TRANSFERIR");
-			String aliasATransferir = escaner.nextLine();
-			monto = mostrarMontos(escaner);
-			realizarTransferencia(alias, aliasATransferir, monto);
-
-		} else if (eleccion.equals("02")) {
-			generarSaltosDeLinea();
-			System.out.println("INGRESE EL ALIAS DE LA CAJA DE AHORRO EN PESOS");
-			String alias = escaner.nextLine();
-			System.out.println("INGRESE EL ALIAS A TRANSFERIR");
-			String aliasATransferir = escaner.nextLine();
-			monto = mostrarMontos(escaner);
-			realizarTransferencia(alias, aliasATransferir, monto);
-		}
+		System.out.println("INGRESE EL ALIAS DE LA CUENTA QUE SE DEBITARA");
+		String alias = escaner.nextLine();
+		System.out.println("INGRESE EL ALIAS DE LA CUENTA A TRANSFERIR");
+		String aliasATransferir = escaner.nextLine();
+		double monto = mostrarMontos(escaner);
+		realizarTransferencia(alias, aliasATransferir, monto);
 	}
 
 	private void imprimirMenuDepositos(Scanner escaner) {
-		String eleccion;
+
 		generarSaltosDeLinea();
-		System.out.println("ELIJA LA CUENTA SOBRE LA QUE SE REALIZARA EL DEPOSITO\n");
-		System.out.println("01 CUENTA CORRIENTE");
-		System.out.println("02 CAJA DE AHORRO EN PESOS");
-		System.out.println("03 CAJA DE AHORRO EN DOLARES");
+		System.out.println("INGRESE EL ALIAS DE LA CUENTA A DEPOSITAR");
 
-		eleccion = escaner.nextLine();
-		double monto;
+		String alias = escaner.nextLine();
+		double monto = mostrarMontos(escaner);
+		depositarFondos(alias, monto);
 
-		if (eleccion.equals("01")) {
-
-			System.out.println("INGRESE EL ALIAS DE LA CUENTA CORRIENTE");
-			String alias = escaner.nextLine();
-			monto = mostrarMontos(escaner);
-			depositarFondos(alias, monto);
-
-		} else if (eleccion.equals("02")) {
-
-			System.out.println("INGRESE EL ALIAS DE LA CAJA DE AHORRO EN PESOS");
-			String alias = escaner.nextLine();
-			monto = mostrarMontos(escaner);
-			depositarFondos(alias, monto);
-		} else if (eleccion.equals("03")) {
-
-			System.out.println("INGRESE EL ALIAS DE LA CAJA DE AHORRO EN DOLARES");
-			String alias = escaner.nextLine();
-			monto = mostrarMontos(escaner);
-			depositarFondos(alias, monto);
-		}
 	}
 
 	private void imprimirMenuCompraDolares(Scanner escaner) {
-		String eleccion;
+
 		generarSaltosDeLinea();
 
-		System.out.println("ELIJA DE QUE CUENTA SE DEBITARA EL MONTO\n");
-		System.out.println("01 CUENTA CORRIENTE");
-		System.out.println("02 CAJA DE AHORRO EN PESOS");
+		System.out.println("INGRESE EL ALIAS DE LA CUENTA LA CUAL SE DEBITARA");
+		String alias = escaner.nextLine();
+		System.out.println("INGRESE EL ALIAS DE LA CAJA DE AHORRO EN DOLARES");
+		String aliasDolares = escaner.nextLine();
+		System.out.println("ELIJA EL MONTO DE DOLARES A COMPRAR\n");
+		double monto = mostrarMontos(escaner);
+		comprarDolares(alias, aliasDolares, monto);
+		;
 
-		eleccion = escaner.nextLine();
-
-		if (eleccion.equals("01")) {
-
-			System.out.println("INGRESE EL ALIAS DE LA CUENTA CORRIENTE");
-			String alias = escaner.nextLine();
-			System.out.println("INGRESE EL ALIAS DE LA CAJA DE AHORRO EN DOLARES");
-			String aliasDolares = escaner.nextLine();
-			System.out.println("ELIJA EL MONTO DE DOLARES A COMPRAR\n");
-			double monto = mostrarMontos(escaner);
-			comprarDolares(alias, aliasDolares, monto);
-
-		} else if (eleccion.equals("02")) {
-
-			System.out.println("INGRESE EL ALIAS DE LA CAJA DE AHORRO EN PESOS");
-			String alias = escaner.nextLine();
-			System.out.println("INGRESE EL ALIAS DE LA CAJA DE AHORRO EN DOLARES");
-			String aliasDolares = escaner.nextLine();
-			System.out.println("ELIJA EL MONTO DE DOLARES A COMPRAR\n");
-			double monto = mostrarMontos(escaner);
-			comprarDolares(alias, aliasDolares, monto);
-		}
 	}
 
 	private void imprimirMenuExtracciones(Scanner escaner) {
 
 		generarSaltosDeLinea();
-		
+
 		System.out.println("INGRESE EL ALIAS DE LA CUENTA A EXTRAER");
-		
+
 		String alias = escaner.nextLine();
-		
+
 		double monto = mostrarMontos(escaner);
 		retirarEfectivo(alias, monto);
 
@@ -269,13 +224,14 @@ public class Menu {
 		Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
 		((Extraccion) operaciones[0]).extraerFondos(cuenta, monto);
 
-//		String movimiento = fecha + hora + cuenta.getAlias() + "Extraccion" + monto + cuenta.obtenerSaldo();
+		String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
+				+ "Extraccion" + "," + monto + "," + cuenta.obtenerSaldo();
 
+		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
+		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
+				movimiento);
 
-		new HistorialMovimientos().agregarMovimiento(cuenta.obtenerListaMovimientos(),movimiento);
-		new HistorialMovimientos().agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),movimiento);
-
-//		imprimirTicket(movimiento);
+//		cajero.imprimirTicket(movimiento);
 	}
 
 	private void comprarDolares(String alias, String aliasDolares, double dolares) {
@@ -284,13 +240,17 @@ public class Menu {
 		Cuenta cuentaDolares = cajero.getCliente().devolverCuenta(aliasDolares);
 
 		((ComprarDolares) operaciones[3]).comprarDolares(cuenta, cuentaDolares, dolares);
-//		
-//		String movimiento = fecha + hora + cuenta.getAlias() + "Compra Dolares" + monto + cuenta.obtenerSaldo();
-//		
-//		new HistorialMovimientos().agregarMovimiento(cuenta.obtenerListaMovimientos(),movimiento);
-//		new HistorialMovimientos().agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),movimiento);
+
+		String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
+				+ "Compra Dolares" + "," + dolares + "," + cuenta.obtenerSaldo();
+
+		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
+		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuentaDolares.obtenerListaMovimientos(), movimiento);
+		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
+				movimiento);
+
 //
-//		imprimirTicket(movimiento);
+//		cajero.imprimirTicket(movimiento);
 //		
 	}
 
@@ -302,10 +262,10 @@ public class Menu {
 		String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
 				+ "Deposito" + "," + monto + "," + cuenta.obtenerSaldo();
 
-		((HistorialMovimientos)operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
-		((HistorialMovimientos)operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(), movimiento);
-		System.out.println(cuenta.obtenerListaMovimientos());
-		System.out.println(cajero.getCliente().devolverListaMovimientos());
+		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
+		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
+				movimiento);
+
 //		cajero.imprimirTicket(movimiento);
 //		
 //		
@@ -321,46 +281,48 @@ public class Menu {
 
 		String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
 				+ "Transferencia" + "," + (-monto) + "," + cuenta.obtenerSaldo();
-		String movimientoTransferido = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuentaATransferir.obtenerAlias() + ","
-				+ "Transferencia" + "," + monto + "," + cuentaATransferir.obtenerSaldo();
-		
-		System.out.println("cuenta " + cuenta.obtenerSaldo());
-		System.out.println("Cuenta a transferir " +cuentaATransferir.obtenerSaldo());
-		
-		new HistorialMovimientos().agregarMovimiento(cuenta.obtenerListaMovimientos(),movimiento);
-		new HistorialMovimientos().agregarMovimiento(cuentaATransferir.obtenerListaMovimientos(), movimientoTransferido);
-		new HistorialMovimientos().agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),movimiento);
-		new HistorialMovimientos().agregarMovimiento(cajero.getCliente().devolverListaMovimientos(), movimientoTransferido);
+		String movimientoTransferido = cajero.obtenerFechaYHora().devolverFechaYHora() + ","
+				+ cuentaATransferir.obtenerAlias() + "," + "Transferencia" + "," + monto + ","
+				+ cuentaATransferir.obtenerSaldo();
+
+		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
+		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuentaATransferir.obtenerListaMovimientos(),
+				movimientoTransferido);
+		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(), movimiento);
+		((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
+				movimientoTransferido);
 //
-//		imprimirTicket(movimiento);
+//		cajero.imprimirTicket(movimiento);
 	}
 
 	private void consultarSaldo(String alias) {
 
 		Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
 
-		System.out.println(((ConsultarSaldo) operaciones[4]).consultarSaldo(cuenta));
+		((ConsultarSaldo) operaciones[4]).consultarSaldo(cuenta);
 
 	}
 
 	private void revertirTransferencia() {
-		
-		List <String> movimientos = cajero.getCliente().devolverListaMovimientos();
-		System.out.println("Lista completa" + movimientos);
-		String [] lineaDeMovimiento = movimientos.get(movimientos.size()-1).split(",");
-		for(String linea : lineaDeMovimiento) {
-			System.out.print(linea + ",");
-		}
-		if(lineaDeMovimiento[3].equals("Transferencia")) {
-			System.out.println("Entre");
-			String [] lineaTransferencia = movimientos.get(movimientos.size()-2).split(",");
-			
+
+		List<String> movimientos = cajero.getCliente().devolverListaMovimientos();
+
+		String[] lineaDeMovimiento = movimientos.get(movimientos.size() - 1).split(",");
+
+		if (lineaDeMovimiento[3].equals("Transferencia")) {
+
+			String[] lineaTransferencia = movimientos.get(movimientos.size() - 2).split(",");
+
 			Cuenta cuenta = cajero.getCliente().devolverCuenta(lineaTransferencia[2]);
 			Cuenta cuentaTransferida = cajero.getCliente().devolverCuenta(lineaDeMovimiento[2]);
-			
-			((Transferencia)operaciones[2]).revertirMovimiento(cuenta,cuentaTransferida);
-			System.out.println("SAldo final " + cuenta.obtenerSaldo()+ " , " + "SAldo 2 " + cuentaTransferida.obtenerSaldo());
+
+			((Transferencia) operaciones[2]).revertirMovimiento(cuenta, cuentaTransferida);
+
 		}
-		
+		else {
+			
+			System.err.println("LA TRANSFERENCIA YA NO PUEDE SER REVERTIDA");
+		}
+
 	}
 }
