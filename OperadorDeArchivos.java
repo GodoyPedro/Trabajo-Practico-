@@ -1,4 +1,3 @@
-package predeterminado;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -158,17 +157,29 @@ public class OperadorDeArchivos {
 					
 					if(tipoCuenta.equals("01")) { 
 						
-						listaCuentas.add(new CajaDeAhorroPesos(aliasCuenta,saldoCuenta));
+						try {
+							listaCuentas.add(new CajaDeAhorroPesos(aliasCuenta,saldoCuenta));
+						} catch (ErrorAlIntroducirSaldo e) {
+							System.out.println("El saldo introducido es inválido");
+						}
 					}
 					
 					if(tipoCuenta.equals("02")) {
 												
-						listaCuentas.add(new CuentaCorriente(aliasCuenta,saldoCuenta,descubiertoCuenta));
+						try {
+							listaCuentas.add(new CuentaCorriente(aliasCuenta,saldoCuenta,descubiertoCuenta));
+						} catch (ErrorAlIntroducirSaldo e) {
+							System.out.println("El saldo introducido es inválido");
+						}
 					}
 					
 					if(tipoCuenta.equals("03")) {
 						
-						listaCuentas.add(new CajaDeAhorroDolares(aliasCuenta,saldoCuenta));
+						try {
+							listaCuentas.add(new CajaDeAhorroDolares(aliasCuenta,saldoCuenta));
+						} catch (ErrorAlIntroducirSaldo e) {
+							System.out.println("El saldo introducido es inválido");
+						}
 					}				
 				}			
 			}
