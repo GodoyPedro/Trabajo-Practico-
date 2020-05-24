@@ -33,12 +33,10 @@ public abstract class Cuenta {
         return saldo;
     }
     
-    //Este metodo devuelve el saldo previo del usuario
     public double obtenerSaldoPrevio() {
     	return saldoPrevio;
     }
     
-    //Este metodo se utiliza a la hora de revertir la transferencia/futuras operaciones
     public void cambiarSaldo(double saldo){
     	this.saldo = saldo;
     }
@@ -52,16 +50,14 @@ public abstract class Cuenta {
     	this.saldo += saldo;
     }
     
-    //Este metodo devuelte el alias de la cuenta
     public String obtenerAlias(){
     	return alias;
     }
     
-    //Este metodo devuelve la lista de movimientos de su cuenta
     public List<String> obtenerListaMovimientos(){
     	return movimientos;
     }
     
     //Este metodo seria el "retirar"
-    public abstract void quitarSaldo(int saldo) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo;
+    public abstract void quitarSaldo(double saldo) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo;
 }
