@@ -7,7 +7,8 @@ public class Menu {
 
 	private Cajero cajero;
 	private Operacion[] operaciones;
-
+	private static boolean operando = true;
+	
 	public Menu(Cajero cajero) {
 
 		this.cajero = cajero;
@@ -21,16 +22,69 @@ public class Menu {
 		operaciones[5] = new HistorialMovimientos();
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args){
+		
+		inicializarCajero();
+	}
 
-		System.out.println("INGRESE EL PIN DE LA TARJETA");
-		Tarjeta tarjeta = new Tarjeta("12345678");
-		Cajero cajero = new Cajero(tarjeta);
-
-		Menu menu = new Menu(cajero);
-		while (true) {
-			menu.desplegarInterfaz();
+	private static void inicializarCajero() {
+		
+		try {
+			
+			System.out.println("INGRESE EL NUMERO DE LA TARJETA");
+			Scanner numeroTarjeta = new Scanner(System.in);
+			Tarjeta tarjeta = new Tarjeta(numeroTarjeta.nextLine());
+			System.out.println("INGRESE EL PIN DE LA TARJETA");
+			validarPinTarjeta(tarjeta);
+			Cajero cajero = new Cajero(tarjeta);
+			Menu menu = new Menu(cajero);
+	
+			while (operando) {
+				menu.desplegarInterfaz();
+			}
 		}
+		catch(ErrorLimiteIntentosAlcanzado error) {
+			
+			System.err.println(error.getMessage());
+		}
+		catch(IOException error) {
+			
+			System.err.println(error.getMessage());
+		}
+		
+	}
+
+	private static void validarPinTarjeta(Tarjeta tarjeta) throws ErrorLimiteIntentosAlcanzado {
+		
+		Scanner entradaUsuario = new Scanner(System.in);
+		
+		int intentos = 3;
+		
+		while(intentos > 0) {
+			
+			if(entradaUsuario.nextLine().equals(tarjeta.obtenerPin())) {
+				
+				intentos = -1;
+			}
+			
+			else {
+				
+				intentos--;
+				
+				if(intentos > 0) {
+					System.out.println("Contraseña incorrecta "+"quedan "+intentos+" intentos");
+				}
+				
+				else {
+					System.out.println("No quedan mas intentos, bloqueando cuenta...");
+				}
+			}
+		}
+		
+		if(intentos == 0) {
+			
+			throw new ErrorLimiteIntentosAlcanzado("Se bloqueo la cuenta");
+		}		
 	}
 
 	public void desplegarInterfaz() {
@@ -64,7 +118,6 @@ public class Menu {
 			imprimirMenuDepositos(escaner);
 
 		}
-
 		else if (eleccion.equals("04")) {
 
 			imprimirMenuTransferencia(escaner);
@@ -89,8 +142,8 @@ public class Menu {
 		System.out.println("       MUCHAS GRACIAS\n"
 				+ "NO OLVIDE RETIRAR SU TARJETA");
 		
-//		cajero.finalizarMovimientos();
-		
+		cajero.finalizarMovimientos();
+		operando = false;
 	}
 
 	private void imprimirMenuConsultas(Scanner escaner) {
@@ -112,7 +165,8 @@ public class Menu {
 		System.out.println("INGRESE EL ALIAS DE LA CUENTA A TRANSFERIR");
 		String aliasATransferir = escaner.nextLine();
 		double monto = mostrarMontos(escaner);
-		realizarTransferencia(alias, aliasATransferir, monto);
+		realizarTransferencia(alias, aliasATransferir, monto);	
+
 	}
 
 	private void imprimirMenuDepositos(Scanner escaner) {
@@ -137,8 +191,6 @@ public class Menu {
 		System.out.println("ELIJA EL MONTO DE DOLARES A COMPRAR\n");
 		double monto = mostrarMontos(escaner);
 		comprarDolares(alias, aliasDolares, monto);
-		;
-
 	}
 
 	private void imprimirMenuExtracciones(Scanner escaner) {
@@ -156,12 +208,7 @@ public class Menu {
 
 	private void generarSaltosDeLinea() {
 
-		for (int i = 0; i < 10; i++) {
-
-			System.out.println("");
-
-		}
-
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	}
 
 	private double mostrarMontos(Scanner escaner) {
@@ -179,39 +226,37 @@ public class Menu {
 
 			System.out.println("INGRESE EL MONTO");
 			monto = escaner.nextDouble();
-		}
-
-		else if (eleccion.equals("01")) {
+		} else if (eleccion.equals("01")) {
 
 			monto = 5000;
+			
 		} else if (eleccion.equals("02")) {
 
 			monto = 2000;
+			
 		} else if (eleccion.equals("03")) {
 
 			monto = 1000;
 
-		}
-
-		else if (eleccion.equals("04")) {
+		} else if (eleccion.equals("04")) {
 
 			monto = 500;
 
 		} else if (eleccion.equals("05")) {
 
 			monto = 300;
-		}
-
-		else if (eleccion.equals("06")) {
+			
+		} else if (eleccion.equals("06")) {
 
 			monto = 200;
-
+			
 		} else if (eleccion.equals("07")) {
 
 			monto = 100;
-		} else {
+			
+		} else{
 
-			System.err.println("INGRESE UN MONTO VALIDO\n");
+			System.err.println("Ingrese un monto valido\n");
 			mostrarMontos(escaner);
 		}
 
@@ -233,16 +278,11 @@ public class Menu {
 			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
 					movimiento);
 
-			//		cajero.imprimirTicket(movimiento);
+			System.out.println(cajero.imprimirTicket(movimiento));
 		}
-		catch (ErrorSaldoInsuficiente e) {
+		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo e) {
 			
-			System.err.println("El saldo de la cuenta es insuficiente para realizar esta operación");
-			
-		}
-		catch (ErrorAlIntroducirSaldo e) {
-			
-			System.err.println("El saldo introducido no es válido");
+			System.err.println(e.getMessage());
 			
 		}
 	}
@@ -264,18 +304,13 @@ public class Menu {
 			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
 					movimiento);
 
-			//
-			//		cajero.imprimirTicket(movimiento);
+		
+			System.out.println(cajero.imprimirTicket(movimiento));
 		}
-		catch (ErrorSaldoInsuficiente e) {
-
-			System.err.println("El saldo de la cuenta es insuficiente para realizar esta operación");
-
-		}
-		catch (ErrorAlIntroducirSaldo e) {
-
-			System.err.println("El saldo introducido no es válido");
-
+		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo e) {
+			
+			System.err.println(e.getMessage());
+			
 		}
 	}
 
@@ -293,12 +328,11 @@ public class Menu {
 			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
 					movimiento);
 
-			//		cajero.imprimirTicket(movimiento);
+			System.out.println(cajero.imprimirTicket(movimiento));
 		}
 		catch (ErrorAlIntroducirSaldo e) {
 
-			System.err.println("El saldo introducido no es válido");
-
+			System.err.println(e.getMessage());
 		}
 	}
 
@@ -324,17 +358,11 @@ public class Menu {
 			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
 					movimientoTransferido);
 
-			//		cajero.imprimirTicket(movimiento);
+			System.out.println(cajero.imprimirTicket(movimiento));
 		}
-		catch (ErrorSaldoInsuficiente e) {
+		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo | ErrorTransferencia e) {
 
-			System.err.println("El saldo de la cuenta es insuficiente para realizar esta operación");
-
-		}
-		catch (ErrorAlIntroducirSaldo e) {
-
-			System.err.println("El saldo introducido no es válido");
-
+			System.err.println(e.getMessage());
 		}
 	}
 
@@ -364,7 +392,7 @@ public class Menu {
 		}
 		else {
 			
-			System.err.println("LA TRANSFERENCIA YA NO PUEDE SER REVERTIDA");
+			System.err.println("La transferencia no puede ser revertida");
 		}
 
 	}
