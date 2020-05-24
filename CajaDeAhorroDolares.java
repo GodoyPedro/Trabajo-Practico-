@@ -8,6 +8,8 @@ public class CajaDeAhorroDolares extends Cuenta{
 	public void quitarSaldo(double saldo) throws ErrorSaldoInsuficiente {
 		if(saldo > this.saldo){
 			throw new ErrorSaldoInsuficiente();
+		}else if(saldo < 0){
+			throw new ErrorAlIntroducirSaldo();
 		}
 		this.saldoPrevio = this.saldo;
 		this.saldo -= saldo;
