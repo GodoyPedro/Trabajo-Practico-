@@ -5,7 +5,7 @@ public class CajaDeAhorroDolares extends Cuenta{
 	}
 
 	@Override
-	public void quitarSaldo(double saldo) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo {
+	public void quitarSaldo(int saldo) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo {
 		if(saldo > this.saldo){
 			throw new ErrorSaldoInsuficiente();
 		}else if(saldo < 0){
