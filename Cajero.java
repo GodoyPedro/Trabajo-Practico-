@@ -1,5 +1,6 @@
 
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,6 +15,11 @@ public class Cajero {
 		
 		cliente = leerTarjeta(tarjeta);
 		fechaYHora = new FechaYHora();
+	}
+	
+	public int[] getBilletes() {
+		
+		return cantidadDeBilletes;
 	}
 	
 	public FechaYHora obtenerFechaYHora() {
@@ -57,11 +63,47 @@ public class Cajero {
 		cliente = null;
 	}
 
-	private String[] dispensarBilletes(int monto) {
-		//metodo que devuelve los billetes
-		return null;
-	}
+	public String[] dispensarBilletes(int monto) throws ErrorFaltanBilletes{
+		
+		int[] montos = {1000,500,100};
+		String[] devolverBilletes = new String[3];
+		
+		boolean puedo = comprobarDisponibilidad(monto, montos, devolverBilletes);
+	
+		for (int i = 0; puedo && i < montos.length; i++) {
+			
+			int cantidadBillete = monto / montos[i];
 
+			if(cantidadDeBilletes[i] >= cantidadBillete) {
+				
+				devolverBilletes[i] = String.valueOf(cantidadBillete);
+				cantidadDeBilletes[i] -= cantidadBillete;
+				monto = monto % montos[i];		
+			}
+			else {
+				
+				devolverBilletes[i] = "0";
+			}
+		}
+		return puedo?devolverBilletes:new String[]{"-1","-1","-1"};
+	}
+	
+	private boolean comprobarDisponibilidad(int monto, int[] montos, String[] devolverBilletes) {
+		
+		boolean puedo = true;
+	
+		int plata = monto;
+		
+		for (int i = 0; puedo && i< devolverBilletes.length; i++) {
+			
+			puedo = plata/montos[i] <= cantidadDeBilletes[i];
+			
+			plata %= montos[i];	
+		}
+		
+		return puedo;
+	}
+	
 	private void recargarBilletes() {
 		
 		for (int i = 0; i < cantidadDeBilletes.length; i++) {
