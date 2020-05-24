@@ -1,5 +1,3 @@
-package predeterminado;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -23,17 +21,6 @@ public class FechaYHora {
 		
 		
 	}
-
-	/**
-	 * 
-	 * @return hora
-	 */
-	
-	public String getHora() {
-		
-	
-		return hora;
-	}
 	
 	public String devolverFechaYHora() {
 		
@@ -41,14 +28,6 @@ public class FechaYHora {
 		return fecha + "," + hora;
 	}
 	
-	
-	/**
-	 * @return fecha
-	 */
-	public String getFecha() {
-		
-		return fecha;
-	}
 	
 	private void actualizarHora() {
 		
