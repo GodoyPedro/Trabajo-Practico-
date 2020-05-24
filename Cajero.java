@@ -1,5 +1,4 @@
 
-package predeterminado;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +14,6 @@ public class Cajero {
 		
 		cliente = leerTarjeta(tarjeta);
 		fechaYHora = new FechaYHora();
-
 	}
 	
 	public FechaYHora obtenerFechaYHora() {
@@ -25,7 +23,7 @@ public class Cajero {
 
 	
 	private Cliente leerTarjeta(Tarjeta tarjeta) {
-
+		
 		return new Cliente(tarjeta.getCuit());
 	}
 	
@@ -34,15 +32,27 @@ public class Cajero {
 		return cliente;
 	}
 	
-	public String obtenerTicket() {
-		return null;
+	public String imprimirTicket(String datos) {
+		
+		//fecha,hora,alias,operacion,monto,saldo
+		String[] datosArray = datos.split(","); 
+		
+		String ticket = String.format("-----------------------------------------------\n"
+									+ "Fecha:         Hora:\n%s    %s\n\nTipo de operacion:\t%s\nAlias de la cuenta:\t%s\nImporte involucrado:\t%s\nSaldo final:\t\t%s"
+									+ "\n-----------------------------------------------\n"
+				,datosArray[0],datosArray[1],datosArray[3],datosArray[2],datosArray[4],datosArray[5]);
+		
+		return ticket;
+	
 	}
 
+	
+	
 //	public String obtenerUltimosMovimientos(String alias) {
 //		return null;
 //	}
 
-	private void finalizarMovimientos() {
+	public void finalizarMovimientos() {
 		
 		cliente = null;
 	}
