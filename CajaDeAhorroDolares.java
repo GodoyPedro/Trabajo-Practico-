@@ -1,17 +1,18 @@
-public class CajaDeAhorroDolares extends Cuenta{
-
-	public CajaDeAhorroDolares(String alias, double saldo) throws ErrorAlIntroducirSaldo {
-		super(alias, saldo);
-	}
-
-	@Override
-	public void quitarSaldo(int saldo) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo {
-		if(saldo > this.saldo){
-			throw new ErrorSaldoInsuficiente();
-		}else if(saldo < 0){
-			throw new ErrorAlIntroducirSaldo();
+public class ComprarDolares extends Operacion {
+	
+	public void comprarDolares(Cuenta cuenta1, Cuenta cuenta2, int montoEnDolares) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo, ErrorCuentaInvalida { 
+		
+		if(cuenta1.getClass().getName().equals("CajaDeAhorroDolares") || !cuenta2.getClass().getName().equals("CajaDeAhorroDolares")) {
+			
+			throw new ErrorCuentaInvalida("No se puede operar con estas cuentas");
 		}
-		this.saldoPrevio = this.saldo;
-		this.saldo -= saldo;
+		
+		double montoEnPesos = montoEnDolares / 0.015;  //
+		cuenta1.quitarSaldo(montoEnPesos * 1.3); //<--- Impuesto
+		cuenta2.agregarSaldo(montoEnDolares);
+		
 	}
 }
+
+
+
