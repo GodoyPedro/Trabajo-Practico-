@@ -2,7 +2,7 @@
 public class Transferencia extends Operacion implements Reversible {
 	
 	
-	public void transferir(Cuenta cuenta1, Cuenta cuenta2, double montoATransferir) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo, ErrorTransferencia {
+	public void transferir(Cuenta cuenta1, Cuenta cuenta2, int montoATransferir) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo, ErrorTransferencia {
 		
 		verificarTransferencia(cuenta1, cuenta2);
 		cuenta1.quitarSaldo(montoATransferir);
