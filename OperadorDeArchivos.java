@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -16,26 +17,36 @@ public class OperadorDeArchivos {
 		int fin=lista.size();		
 		int medio; 					
 		
-		while(inicio <= fin) {		
+		try {
 			
-			medio = (fin+inicio)/2;
-																			
-			if(Integer.parseInt(lista.get(medio).split(",")[0]) > Integer.parseInt(numeroTarjeta)) {
+			while(inicio <= fin) {		
 				
-				fin = medio-1;
-			}
-			
-			else if(Integer.parseInt(lista.get(medio).split(",")[0]) < Integer.parseInt(numeroTarjeta)) {
+				medio = (fin+inicio)/2;
+																				
+				if(Integer.parseInt(lista.get(medio).split(",")[0]) > Integer.parseInt(numeroTarjeta)) {
+					
+					fin = medio-1;
+				}
 				
-				inicio = medio+1;
-			}
+				else if(Integer.parseInt(lista.get(medio).split(",")[0]) < Integer.parseInt(numeroTarjeta)) {
+					
+					inicio = medio+1;
+				}
+				
+				else {
+					return medio;
+				}
+			}			
+		}
+
+		catch (NumberFormatException error){
 			
-			else {
-				return medio;
-			}
-		}	
+			System.err.println("Ingrese un numero valido de tarjeta, intente nuevamente");
+			System.exit(1);
+		}
 		
 		return -1;
+		
 		
 	}
 	/**
@@ -60,16 +71,46 @@ public class OperadorDeArchivos {
 			
 			contenidoDelArchivo = Files.readAllLines(p);
 			
+			if(contenidoDelArchivo.size() == 0) {
+				
+				throw new ErrorArchivoVacio("El archivo esta vacio");
+			}
+			
 			indiceTarjeta = busquedaBinaria(contenidoDelArchivo, numeroTarjeta);
 			
 			if (indiceTarjeta > -1){
 				
 				datosTarjeta = contenidoDelArchivo.get(indiceTarjeta).split(",");
 			}
+	
+			if(datosTarjeta == null || datosTarjeta.length != 3) {
+				
+				throw new ErrorDatosInvalidos("El numero de tarjeta ingresado no existe en la base de datos");
+			}
+
+		}
+		
+		catch (ErrorDatosInvalidos error) {
 			
-		} catch (IOException e) {
+			System.err.println(error.getMessage());
+			System.exit(1);
+		}
+		
+		catch (ErrorArchivoVacio error) {
 			
-			e.printStackTrace();
+			System.err.println(error.getMessage());
+			System.exit(1);	
+		}
+
+		catch (NoSuchFileException error) {
+			
+			System.err.println("El archivo no existe, no esta en el directorio correcto o no tiene el nombre correcto");
+			System.exit(1);
+		}
+			
+		catch (IOException error) {
+			
+			error.printStackTrace();
 		}
 		
 		return datosTarjeta;
@@ -131,6 +172,8 @@ public class OperadorDeArchivos {
 	 */
 	public List<Cuenta> analizarArchivoCuentas(List<String> alias) {
 		
+		
+		
 		List<Cuenta> listaCuentas = new ArrayList<Cuenta>();
 		BufferedReader lector = null;
 		String unaLinea;
@@ -155,32 +198,28 @@ public class OperadorDeArchivos {
 						descubiertoCuenta = Double.parseDouble(informacionCuenta[3]);						
 					}
 					
-					if(tipoCuenta.equals("01")) { 
+					try {
 						
-						try {
+						if(tipoCuenta.equals("01")) { 
+							
 							listaCuentas.add(new CajaDeAhorroPesos(aliasCuenta,saldoCuenta));
-						} catch (ErrorAlIntroducirSaldo e) {
-							System.out.println("El saldo introducido es inválido");
 						}
-					}
-					
-					if(tipoCuenta.equals("02")) {
-												
-						try {
-							listaCuentas.add(new CuentaCorriente(aliasCuenta,saldoCuenta,descubiertoCuenta));
-						} catch (ErrorAlIntroducirSaldo e) {
-							System.out.println("El saldo introducido es inválido");
-						}
-					}
-					
-					if(tipoCuenta.equals("03")) {
 						
-						try {
-							listaCuentas.add(new CajaDeAhorroDolares(aliasCuenta,saldoCuenta));
-						} catch (ErrorAlIntroducirSaldo e) {
-							System.out.println("El saldo introducido es inválido");
+						else if(tipoCuenta.equals("02")) {
+																		
+							listaCuentas.add(new CuentaCorriente(aliasCuenta,saldoCuenta,descubiertoCuenta));
 						}
-					}				
+						
+						else if(tipoCuenta.equals("03")) {
+												
+							listaCuentas.add(new CajaDeAhorroDolares(aliasCuenta,saldoCuenta));				
+						}
+						
+					}
+					catch (ErrorAlIntroducirSaldo e) {
+
+						System.out.println("El saldo introducido es invalido");
+					}							
 				}			
 			}
 			
