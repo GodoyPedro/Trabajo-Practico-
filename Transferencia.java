@@ -1,4 +1,3 @@
-
 public class Transferencia extends Operacion implements Reversible {
 	
 	
