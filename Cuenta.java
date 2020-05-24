@@ -10,7 +10,7 @@ public abstract class Cuenta {
 
     //Este constructor es exclusivamente para CuentaCorriente
     public Cuenta(String alias, double saldo, double descubierto) throws ErrorAlIntroducirSaldo {
-    	if(saldo < descubierto){
+    	if(descubierto < 0 || saldo < -descubierto){
     		throw new ErrorAlIntroducirSaldo();
     	}
     	movimientos = new LinkedList<String>();
