@@ -3,11 +3,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.sound.midi.SysexMessage;
+
 public class Menu {
 
 	private Cajero cajero;
 	private Operacion[] operaciones;
 	private static boolean operando = true;
+	private OperadorDeArchivos operador;
+
 	
 	public Menu(Cajero cajero) {
 
@@ -20,14 +24,16 @@ public class Menu {
 		operaciones[3] = new ComprarDolares();
 		operaciones[4] = new ConsultarSaldo();
 		operaciones[5] = new HistorialMovimientos();
+		operador = new OperadorDeArchivos();
 	}
 
-	public static void main(String[] args) throws ErrorFaltanBilletes{
+	public static void main(String[] args){
+		
 		
 		inicializarCajero();
 	}
 
-	private static void inicializarCajero() throws ErrorFaltanBilletes {
+	private static void inicializarCajero(){
 		
 		try {
 			
@@ -40,18 +46,15 @@ public class Menu {
 			Menu menu = new Menu(cajero);
 	
 			while (operando) {
+				System.out.println("----------------------");
 				menu.desplegarInterfaz();
 			}
 		}
-		catch(ErrorLimiteIntentosAlcanzado error) {
+		catch(ErrorLimiteIntentosAlcanzado | IOException  error) {
 			
 			System.err.println(error.getMessage());
 		}
-		catch(IOException error) {
-			
-			System.err.println(error.getMessage());
-		}
-		
+	
 	}
 
 	private static void validarPinTarjeta(Tarjeta tarjeta) throws ErrorLimiteIntentosAlcanzado {
@@ -87,7 +90,7 @@ public class Menu {
 		}		
 	}
 
-	public void desplegarInterfaz() throws ErrorFaltanBilletes {
+	public void desplegarInterfaz(){
 
 		Scanner escaner = new Scanner(System.in);
 
@@ -99,7 +102,9 @@ public class Menu {
 		System.out.println("04 TRANSFERENCIAS");
 		System.out.println("05 CONSULTAR SALDO");
 		System.out.println("06 REVERTIR TRANSFERENCIA");
-		System.out.println("07 CERRAR SESION");
+		System.out.println("07 CONSULTAR MOVIMIENTOS");
+		System.out.println("08 CONSULTAR ALIAS");	
+		System.out.println("09 CERRAR SESION");
 
 		String eleccion;
 
@@ -116,9 +121,8 @@ public class Menu {
 		} else if (eleccion.equals("03")) {
 
 			imprimirMenuDepositos(escaner);
-
-		}
-		else if (eleccion.equals("04")) {
+		
+		} else if (eleccion.equals("04")) {
 
 			imprimirMenuTransferencia(escaner);
 
@@ -130,11 +134,61 @@ public class Menu {
 
 			revertirTransferencia();
 			
-		} else if(eleccion.equals("07")) {
+		} else if (eleccion.equals("07")) {
+
+			mostrarMovimientos(escaner); 
+		
+		} else if (eleccion.equals("08")) {
+
+			mostrarAlias(); 
+		
+		} else if(eleccion.equals("09")) {
 			
 			cerrarSesion();
 		}
+		generarSaltosDeLinea();
 
+	}
+
+	private void mostrarAlias() {
+		
+		System.out.println("Sus cuentas son:\n");
+		
+		for(Cuenta cuenta: cajero.getCliente().devolverListaCuentas()) {
+			
+			System.out.println(String.format("Tipo: %s\tAlias: %s", cuenta.getClass().getName(),cuenta.obtenerAlias()));
+		}
+		
+	}
+	
+	private boolean comprobarQueExistaCuenta(String alias){
+		
+		if(cajero.getCliente().devolverCuenta(alias) == null) {
+			
+			System.err.println("No se encontro la cuenta");
+			desplegarInterfaz();
+			return false;
+		}
+		
+		return true;
+		
+	}
+
+	private void mostrarMovimientos(Scanner escaner){
+		
+		System.out.println("INGRESE EL ALIAS DE LA CUENTA DE LA CUAL DESEA CONSULTAR SUS MOVIMIENTOS");
+		
+		String alias = escaner.nextLine();
+		
+		if(comprobarQueExistaCuenta(alias)) {
+			
+			Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
+			
+			for(String movimiento: cuenta.obtenerListaMovimientos()) {
+				
+				System.out.println(movimiento);
+			}
+		}
 	}
 
 	private void cerrarSesion() {
@@ -146,60 +200,75 @@ public class Menu {
 		operando = false;
 	}
 
-	private void imprimirMenuConsultas(Scanner escaner) {
+	private void imprimirMenuConsultas(Scanner escaner){
 
 		String alias;
 		generarSaltosDeLinea();
 
 		System.out.println("INGRESE EL ALIAS DE LA CUENTA QUE DESEA CONSULTAR EL SALDO");
 		alias = escaner.nextLine();
+		
+		comprobarQueExistaCuenta(alias);
 
 		consultarSaldo(alias);
 	}
 
-	private void imprimirMenuTransferencia(Scanner escaner) {
+	private void imprimirMenuTransferencia(Scanner escaner){
 
 		generarSaltosDeLinea();
 		System.out.println("INGRESE EL ALIAS DE LA CUENTA QUE SE DEBITARA");
 		String alias = escaner.nextLine();
+		
+		comprobarQueExistaCuenta(alias);
+		
 		System.out.println("INGRESE EL ALIAS DE LA CUENTA A TRANSFERIR");
 		String aliasATransferir = escaner.nextLine();
+		
+		comprobarQueExistaCuenta(aliasATransferir);
 		int monto = mostrarMontos(escaner);
 		realizarTransferencia(alias, aliasATransferir, monto);	
 
 	}
 
-	private void imprimirMenuDepositos(Scanner escaner) {
+	private void imprimirMenuDepositos(Scanner escaner){
 
 		generarSaltosDeLinea();
 		System.out.println("INGRESE EL ALIAS DE LA CUENTA A DEPOSITAR");
 
 		String alias = escaner.nextLine();
+		
+		comprobarQueExistaCuenta(alias);
 		int monto = mostrarMontos(escaner);
 		depositarFondos(alias, monto);
 
 	}
 
-	private void imprimirMenuCompraDolares(Scanner escaner) {
+	private void imprimirMenuCompraDolares(Scanner escaner){
 
 		generarSaltosDeLinea();
 
 		System.out.println("INGRESE EL ALIAS DE LA CUENTA LA CUAL SE DEBITARA");
 		String alias = escaner.nextLine();
+		
+		comprobarQueExistaCuenta(alias);
 		System.out.println("INGRESE EL ALIAS DE LA CAJA DE AHORRO EN DOLARES");
 		String aliasDolares = escaner.nextLine();
+		
+		comprobarQueExistaCuenta(aliasDolares);
 		System.out.println("ELIJA EL MONTO DE DOLARES A COMPRAR\n");
 		int monto = mostrarMontos(escaner);
 		comprarDolares(alias, aliasDolares, monto);
 	}
 
-	private void imprimirMenuExtracciones(Scanner escaner) throws ErrorFaltanBilletes {
+	private void imprimirMenuExtracciones(Scanner escaner){
 
 		generarSaltosDeLinea();
 
 		System.out.println("INGRESE EL ALIAS DE LA CUENTA A EXTRAER");
 
 		String alias = escaner.nextLine();
+		
+		comprobarQueExistaCuenta(alias);
 
 		int monto = mostrarMontos(escaner);
 		retirarEfectivo(alias, monto);
@@ -226,6 +295,13 @@ public class Menu {
 
 			System.out.println("INGRESE EL MONTO");
 			monto = escaner.nextInt();
+			
+			if(monto % 100 != 0) {
+				
+				System.err.println("No se puede seleccionar montos que no sean multiplos de 100");
+				mostrarMontos(new Scanner(System.in));
+			}
+	
 		} else if (eleccion.equals("01")) {
 
 			monto = 5000;
@@ -264,12 +340,12 @@ public class Menu {
 
 	}
 
-	private void retirarEfectivo(String alias, int monto) throws ErrorFaltanBilletes, ErrorCuentaInvalida {
+	private void retirarEfectivo(String alias, int monto){
 
 		try {
 
 			Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
-		
+			
 			String[] billetes = cajero.dispensarBilletes(monto);
 			
 			String movimiento = null;
@@ -299,8 +375,10 @@ public class Menu {
 			}
 
 			System.out.println(cajero.imprimirTicket(movimiento));
+			operador.escribirArchivoMovimientos(cajero.getCliente().devolverListaMovimientos());
+			operador.escribirArchivoTickets(movimiento);
 		}
-		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo error) {
+		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo | ErrorFaltanBilletes error) {
 			
 			System.err.println(error.getMessage());
 			
@@ -326,7 +404,9 @@ public class Menu {
 			
 			
 		
-			System.out.println(cajero.imprimirTicket(movimiento));
+			System.out.println(cajero.imprimirTicket(movimiento));		
+			operador.escribirArchivoMovimientos(cajero.getCliente().devolverListaMovimientos());
+			operador.escribirArchivoTickets(movimiento);
 		}
 		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo | ErrorCuentaInvalida e) {
 			
@@ -350,6 +430,8 @@ public class Menu {
 					movimiento);
 
 			System.out.println(cajero.imprimirTicket(movimiento));
+			operador.escribirArchivoMovimientos(cajero.getCliente().devolverListaMovimientos());
+			operador.escribirArchivoTickets(movimiento);
 		}
 		catch (ErrorAlIntroducirSaldo e) {
 
@@ -371,6 +453,8 @@ public class Menu {
 			String movimientoTransferido = cajero.obtenerFechaYHora().devolverFechaYHora() + ","
 					+ cuentaATransferir.obtenerAlias() + "," + "Transferencia" + "," + monto + ","
 					+ cuentaATransferir.obtenerSaldo();
+			String movimientoTicket = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + "," + cuentaATransferir.obtenerAlias() + ","
+					+ "Transferencia" + "," + monto + "," + cuenta.obtenerSaldo() + "," + cuentaATransferir.obtenerSaldo();
 
 			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
 			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuentaATransferir.obtenerListaMovimientos(),
@@ -379,26 +463,34 @@ public class Menu {
 			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),
 					movimientoTransferido);
 
-			System.out.println(cajero.imprimirTicket(movimiento));
+			System.out.println(cajero.imprimirTicket(movimientoTicket));
+			operador.escribirArchivoMovimientos(cajero.getCliente().devolverListaMovimientos());
+			operador.escribirArchivoTickets(movimientoTicket);
 		}
-		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo | ErrorTransferencia e) {
+		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo | ErrorTransferencia error) {
 
-			System.err.println(e.getMessage());
+			System.err.println(error.getMessage());
 		}
 	}
 
 	private void consultarSaldo(String alias) {
-
+		
 		Cuenta cuenta = cajero.getCliente().devolverCuenta(alias);
 
 		System.out.println(((ConsultarSaldo) operaciones[4]).consultarSaldo(cuenta));
-
 	}
 
-	private void revertirTransferencia() {
-
+	private void revertirTransferencia(){
+		
+		
 		List<String> movimientos = cajero.getCliente().devolverListaMovimientos();
-
+		
+		if(movimientos.size() == 0) {
+			
+			System.err.println("No se realizo ningun movimiento recientemente");
+			desplegarInterfaz();
+		}
+			
 		String[] lineaDeMovimiento = movimientos.get(movimientos.size() - 1).split(",");
 
 		if (lineaDeMovimiento[3].equals("Transferencia")) {
@@ -407,14 +499,36 @@ public class Menu {
 
 			Cuenta cuenta = cajero.getCliente().devolverCuenta(lineaTransferencia[2]);
 			Cuenta cuentaTransferida = cajero.getCliente().devolverCuenta(lineaDeMovimiento[2]);
+			
+			int monto = Integer.valueOf(lineaTransferencia[4]);
+			
+			String movimiento = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
+					+ "RevertirTransferencia" + "," + -monto + "," + cuenta.obtenerSaldo();
+			String movimientoTransferido = cajero.obtenerFechaYHora().devolverFechaYHora() + ","
+					+ cuentaTransferida.obtenerAlias() + "," + "RevertirTransferencia" + "," + monto + ","
+					+ cuentaTransferida.obtenerSaldo();
+			
+			String movimientoTicket = cajero.obtenerFechaYHora().devolverFechaYHora() + "," + cuentaTransferida.obtenerAlias() + "," + cuenta.obtenerAlias() + ","
+					+ "RevertirTransferencia" + "," + (-monto) + "," + String.format("%.2f", cuentaTransferida.obtenerSaldo())+ "," + String.format("%.2f", cuenta.obtenerSaldo());
 
 			((Transferencia) operaciones[2]).revertirMovimiento(cuenta, cuentaTransferida);
+			
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuentaTransferida.obtenerListaMovimientos(), movimiento);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),movimiento);
+			((HistorialMovimientos) operaciones[5]).agregarMovimiento(cajero.getCliente().devolverListaMovimientos(),movimientoTransferido);
+			
+			System.out.println(cajero.imprimirTicket(movimientoTicket));
+			
+			operador.escribirArchivoMovimientos(cajero.getCliente().devolverListaMovimientos());
+			operador.escribirArchivoTickets(movimientoTicket);
+			
+			System.out.println("Se revirtio exitosamente la transferencia");
 
 		}
 		else {
 			
-			System.err.println("La transferencia no puede ser revertida");
+			System.err.println("El ultimo movimiento no es una transferencia");
 		}
-
 	}
 }
