@@ -1,4 +1,3 @@
-package predeterminado;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,10 +14,9 @@ public class Cliente {
 		List<String> alias = new OperadorDeArchivos().analizarArchivoClientes(cuit);
 		movimientos = new LinkedList<String>();
 		listaCuentas = new OperadorDeArchivos().analizarArchivoCuentas(alias);
-	 	
 	}
 	
-	public Cuenta devolverCuenta(String alias) {
+	public Cuenta devolverCuenta(String alias){
 		
 		for(Cuenta cuenta: listaCuentas) {
 			
@@ -34,6 +32,11 @@ public class Cliente {
 	public List<String> devolverListaMovimientos(){
 		
 		return movimientos;
+	}
+	
+	public List<Cuenta> devolverListaCuentas(){
+		
+		return listaCuentas;
 	}
 
 }
