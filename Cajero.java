@@ -41,15 +41,27 @@ public class Cajero {
 	public String imprimirTicket(String datos) {
 		
 		//fecha,hora,alias,operacion,monto,saldo
+	
 		String[] datosArray = datos.split(","); 
+		String ticket = null;
 		
-		String ticket = String.format("-----------------------------------------------\n"
-									+ "Fecha:         Hora:\n%s    %s\n\nTipo de operacion:\t%s\nAlias de la cuenta:\t%s\nImporte involucrado:\t%s\nSaldo final:\t\t%s"
-									+ "\n-----------------------------------------------\n"
-				,datosArray[0],datosArray[1],datosArray[3],datosArray[2],datosArray[4],datosArray[5]);
+		if(datosArray.length == 6) {
+			
+			ticket = String.format("-----------------------------------------------\n"
+					+ "Fecha:         Hora:\n%s    %s\n\nTipo de operacion:\t%s\nAlias de la cuenta:\t%s\nImporte involucrado:\t%s\nSaldo final:\t\t%s"
+					+ "\n-----------------------------------------------\n"
+					,datosArray[0],datosArray[1],datosArray[3],datosArray[2],datosArray[4],datosArray[5]);
+		}
+		
+		else {
+			
+			ticket = String.format("-----------------------------------------------\n"
+					+ "Fecha:         Hora:\n%s    %s\n\nTipo de operacion:\t%s\nAlias de la cuenta a debitar:\t%s\nAlias de la cuenta a acreditar:\t%s\nImporte involucrado:\t%s\nSaldo final:\t\t%s"
+					+ "\n-----------------------------------------------\n"
+					,datosArray[0],datosArray[1],datosArray[4],datosArray[2],datosArray[3],datosArray[5],datosArray[6]);
+		}
 		
 		return ticket;
-	
 	}
 
 	
