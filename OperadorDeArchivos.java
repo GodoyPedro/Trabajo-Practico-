@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -22,22 +24,27 @@ public class OperadorDeArchivos {
 			while(inicio <= fin) {		
 				
 				medio = (fin+inicio)/2;
-																				
+				
+				if(medio >= lista.size()) {
+					
+					return -1;
+				}
+				
 				if(Integer.parseInt(lista.get(medio).split(",")[0]) > Integer.parseInt(numeroTarjeta)) {
 					
 					fin = medio-1;
 				}
 				
 				else if(Integer.parseInt(lista.get(medio).split(",")[0]) < Integer.parseInt(numeroTarjeta)) {
-					
 					inicio = medio+1;
 				}
 				
 				else {
 					return medio;
 				}
-			}			
+			}
 		}
+		
 
 		catch (NumberFormatException error){
 			
@@ -45,9 +52,7 @@ public class OperadorDeArchivos {
 			System.exit(1);
 		}
 		
-		return -1;
-		
-		
+		return -1;	
 	}
 	/**
 	 * Abro el archivo "Validacion de tarjetas", uso una busqueda binaria para encontrar eficientemente si existe una tarjeta
@@ -245,10 +250,56 @@ public class OperadorDeArchivos {
 	}
 	
 	
-	public void escribirArchivoMovimientos() {
+	public void  escribirArchivoMovimientos(List<String> movimientos){
+		
+		FileWriter escritor = null;
+		
+		try {
+			
+			try {
+				
+				escritor = new FileWriter("./txt/Movimientos.txt");
+				
+				for(String movimiento: movimientos) {
+					
+					escritor.write(movimiento + System.lineSeparator());
+
+				}
+				
+			} finally {
+				
+				escritor.close();
+			}
+				
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+
+		}	
+	}
+	public void escribirArchivoTickets(String datos) {
+		
+		FileWriter escritor = null;
+		
+		try {
+			
+			try {
+				
+				escritor = new FileWriter("./txt/Tickets.txt",true);
+
+				escritor.write(datos + System.lineSeparator());	
+				
+			} finally {
+				
+				escritor.close();
+			}
+				
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+
+		}	
 		
 	}
-	public void escribirArchivoTickets() {
-		
-	}
+
 }
