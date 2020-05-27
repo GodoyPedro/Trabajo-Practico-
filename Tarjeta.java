@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Tarjeta {
@@ -9,7 +8,7 @@ public class Tarjeta {
 	private String pin;
 
 	
-	public Tarjeta(String numeroTarjeta) throws IOException {
+	public Tarjeta(String numeroTarjeta){
 		
 		leerNumeroTarjeta(numeroTarjeta);
 	}
@@ -32,4 +31,34 @@ public class Tarjeta {
 		
 		return pin;
 	}
+	
+	public void validarPinTarjeta(Tarjeta tarjeta){
+		
+		Scanner pinTarjeta = new Scanner(System.in);
+		
+		int intentos = 3;
+		
+		while(intentos > 0) {
+			
+			if(pinTarjeta.nextLine().equals(tarjeta.obtenerPin())) {
+				
+				intentos = -1;
+			}
+			
+			else {
+				
+				intentos--;
+				
+				if(intentos > 0) {
+					System.out.println("Contraseña incorrecta "+"quedan "+intentos+" intentos");
+				}
+				
+				else {
+					System.out.println("No quedan mas intentos, bloqueando cuenta...");
+					System.exit(1);
+				}
+			}
+		}		
+	}
+
 }
