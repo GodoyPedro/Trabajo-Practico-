@@ -9,12 +9,14 @@ public class Cajero {
 	private Cliente cliente;
 	private int[] cantidadDeBilletes = {500,500,500};
 	private FechaYHora fechaYHora;
+	private Menu menu;
 	
 	
-	public Cajero(Tarjeta tarjeta) {
+	public Cajero(Tarjeta tarjeta, Menu menu) {
 		
 		cliente = leerTarjeta(tarjeta);
 		fechaYHora = new FechaYHora();
+		this.menu = menu;
 	}
 	
 	public int[] getBilletes() {
@@ -64,12 +66,6 @@ public class Cajero {
 		return ticket;
 	}
 
-	
-	
-//	public String obtenerUltimosMovimientos(String alias) {
-//		return null;
-//	}
-
 	public void finalizarMovimientos() {
 		
 		cliente = null;
@@ -116,12 +112,11 @@ public class Cajero {
 		return puedo;
 	}
 	
-	private void recargarBilletes() {
+	public void recargarBilletes() {
 		
 		for (int i = 0; i < cantidadDeBilletes.length; i++) {
 			
-			cantidadDeBilletes[i] += 500;
+			cantidadDeBilletes[i] += 500;		
 		}
 	}
-	
 }
