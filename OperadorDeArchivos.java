@@ -301,5 +301,32 @@ public class OperadorDeArchivos {
 		}	
 		
 	}
+	
+	public void escritorArchivoAlias(List<String> datos) {
+		
+		FileWriter escritor = null;
+		
+		try {
+			
+			try {
+				
+				escritor = new FileWriter("./txt/Alias.txt",true);
+				
+				for(String alias: datos) {
+				
+					escritor.write(alias + System.lineSeparator());	
+				}
+				
+			} finally {
+				
+				escritor.close();
+			}
+				
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+
+		}
+	}
 
 }
