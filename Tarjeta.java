@@ -2,15 +2,14 @@ import java.util.Scanner;
 
 public class Tarjeta {
 	
-	private String numeroTarjeta;
-	private int intentos = 3;
 	private String cuit;
 	private String pin;
 
 	
-	public Tarjeta(String numeroTarjeta){
+	public Tarjeta(String pin, String cuit){
 		
-		leerNumeroTarjeta(numeroTarjeta);
+		this.pin = pin;
+		this.cuit = cuit;
 	}
 	
 	public String getCuit() {
@@ -18,15 +17,6 @@ public class Tarjeta {
 		return cuit;
 	}
 	
-	public void leerNumeroTarjeta(String numeroTarjeta){
-		
-		String [] datos = new OperadorDeArchivos().analizarArchivoValidacion(numeroTarjeta);
-		
-		this.pin = datos[1];
-		this.cuit = datos[2];
-	}
-	
-
 	public String obtenerPin() {
 		
 		return pin;
