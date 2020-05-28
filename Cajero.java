@@ -10,22 +10,23 @@ public class Cajero {
 	private FechaYHora fechaYHora;
 	private Menu menu;
 	private Operacion[] operaciones;
-	private OperadorDeArchivos operador;
 	private boolean operando = true;
+	private BaseDeDatos baseDatos;
 
 	public Cajero(Tarjeta tarjeta) {
 		
 		cliente = leerTarjeta(tarjeta);
 		fechaYHora = new FechaYHora();
-		operaciones = new Operacion[6];
+		operaciones = new Operacion[7];
 		operaciones[0] = new Extraccion();
 		operaciones[1] = new Deposito();
 		operaciones[2] = new Transferencia();
 		operaciones[3] = new ComprarDolares();
 		operaciones[4] = new ConsultarSaldo();
 		operaciones[5] = new HistorialMovimientos();
-		operador = new OperadorDeArchivos();
+		operaciones[6] = new ConsultarAlias();
 		menu = new Menu(this);
+		baseDatos = new BaseDeDatos();
 		
 		while(operando) {
 			
@@ -47,37 +48,28 @@ public class Cajero {
 			String movimiento = null;
 			
 			if(!billetes[0].equals("-1")) {
-				try {
+							
+				((Extraccion) operaciones[0]).extraerFondos(cuenta, monto);
+
+				movimiento = obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
+						+ "Extraccion" + "," + monto + "," + cuenta.obtenerSaldo();
+
+				((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
+				((HistorialMovimientos) operaciones[5]).agregarMovimiento(getCliente().devolverListaMovimientos(),
+						movimiento);	
+				
+				
+				String[] leyendasBilletes = {"Billetes de 1000: ","Billetes de 500: ","Billetes de 100: "};
+				
+				for (int i = 0; i < billetes.length; i++) {
 					
-					((Extraccion) operaciones[0]).extraerFondos(cuenta, monto);
-	
-					movimiento = obtenerFechaYHora().devolverFechaYHora() + "," + cuenta.obtenerAlias() + ","
-							+ "Extraccion" + "," + monto + "," + cuenta.obtenerSaldo();
-	
-					((HistorialMovimientos) operaciones[5]).agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
-					((HistorialMovimientos) operaciones[5]).agregarMovimiento(getCliente().devolverListaMovimientos(),
-							movimiento);	
-					
-					
-					String[] leyendasBilletes = {"Billetes de 1000: ","Billetes de 500: ","Billetes de 100: "};
-					
-					for (int i = 0; i < billetes.length; i++) {
-						
-						System.out.println(leyendasBilletes[i]+billetes[i]);
-					}
-					
-					System.out.println(imprimirTicket(movimiento));
-					operador.escribirArchivoMovimientos(getCliente().devolverListaMovimientos());
-					operador.escribirArchivoTickets(movimiento);
+					System.out.println(leyendasBilletes[i]+billetes[i]);
 				}
 				
-				catch(ErrorCuentaInvalida error) {
-					
-					System.err.println(error.getMessage());
-				}
+				System.out.println(imprimirTicket(movimiento));
+				baseDatos.escribirArchivoMovimientos(getCliente().devolverListaMovimientos());
+				baseDatos.escribirArchivoTickets(movimiento);
 			}
-
-			
 		}
 		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo | ErrorFaltanBilletes error) {
 			
@@ -105,8 +97,8 @@ public class Cajero {
 			
 		
 			System.out.println(imprimirTicket(movimiento));		
-			operador.escribirArchivoMovimientos(getCliente().devolverListaMovimientos());
-			operador.escribirArchivoTickets(movimiento);
+			baseDatos.escribirArchivoMovimientos(getCliente().devolverListaMovimientos());
+			baseDatos.escribirArchivoTickets(movimiento);
 		}
 		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo e) {
 			
@@ -130,8 +122,8 @@ public class Cajero {
 					movimiento);
 
 			System.out.println(imprimirTicket(movimiento));
-			operador.escribirArchivoMovimientos(getCliente().devolverListaMovimientos());
-			operador.escribirArchivoTickets(movimiento);
+			baseDatos.escribirArchivoMovimientos(getCliente().devolverListaMovimientos());
+			baseDatos.escribirArchivoTickets(movimiento);
 		}
 		catch (ErrorAlIntroducirSaldo e) {
 
@@ -164,8 +156,8 @@ public class Cajero {
 					movimientoTransferido);
 
 			System.out.println(imprimirTicket(movimientoTicket));
-			operador.escribirArchivoMovimientos(getCliente().devolverListaMovimientos());
-			operador.escribirArchivoTickets(movimientoTicket);
+			baseDatos.escribirArchivoMovimientos(getCliente().devolverListaMovimientos());
+			baseDatos.escribirArchivoTickets(movimientoTicket);
 		}
 		
 		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo error) {
@@ -219,8 +211,8 @@ public class Cajero {
 				
 				System.out.println(imprimirTicket(movimientoTicket));
 				
-				operador.escribirArchivoMovimientos(getCliente().devolverListaMovimientos());
-				operador.escribirArchivoTickets(movimientoTicket);
+				baseDatos.escribirArchivoMovimientos(getCliente().devolverListaMovimientos());
+				baseDatos.escribirArchivoTickets(movimientoTicket);
 								
 				estado = 1;
 			}
@@ -246,14 +238,9 @@ public class Cajero {
 
     public List<Cuenta> mostrarAlias() {
 		
-	
-    	List<String> listaAlias = new LinkedList<String>();
-		
-		for(Cuenta cuenta: getCliente().devolverListaCuentas()) {
-			
-			listaAlias.add(cuenta.obtenerAlias());
-		}
-		operador.escritorArchivoAlias(listaAlias);	
+    	List<String> listaAlias = ((ConsultarAlias)operaciones[6]).devolverListaAlias(getCliente().devolverListaCuentas());
+
+		baseDatos.escritorArchivoAlias(listaAlias);	
 		
 		return getCliente().devolverListaCuentas();
 	}
@@ -277,13 +264,23 @@ public class Cajero {
 	
 	public boolean noEsCajaDeAhorroDolares(String alias) {
 		
+		if(!getCliente().devolverCuenta(alias).getClass().getName().equals("CajaDeAhorroDolares")) {
+			
+			return true;
+		}
+		System.err.println("NO SE PUEDE OPERAR CON UNA CUENTA EN DOLARES");
+		return false;
+	}
+	
+	public boolean esCajaDeAhorroDolares(String alias) {
+		
 		if(getCliente().devolverCuenta(alias).getClass().getName().equals("CajaDeAhorroDolares")) {
 			
-			System.err.println("NO SE PUEDE OPERAR CON UNA CUENTA EN DOLARES!");
-			return false;
+			
+			return true;
 		}
-		
-		return true;
+		System.err.println("ESTA CUENTA NO ES EN DOLARES");
+		return false;
 	}
 	
 	public FechaYHora obtenerFechaYHora() {
