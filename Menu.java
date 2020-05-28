@@ -1,9 +1,4 @@
-
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
-
-import javax.sound.midi.SysexMessage;
 
 public class Menu {
 
@@ -18,9 +13,9 @@ public class Menu {
 	public void desplegarInterfaz(){
 
 		Scanner escaner = new Scanner(System.in);
-
-		System.out.println("        BIENVENIDO");
-		System.out.println("SELECCIONE EL TIPO DE OPERACION\n     QUE DESEA EFECTUAR\n");
+		generarSaltosDeLinea();
+		System.out.println(" BIENVENIDO AL CAJERO COVIDENTE\n");
+		System.out.println("SELECCIONE EL  TIPO DE OPERACION\n     QUE DESEA EFECTUAR\n");
 		System.out.println("01 EXTRACCIONES");
 		System.out.println("02 COMPRAR DOLARES");
 		System.out.println("03 DEPOSITOS");
@@ -32,7 +27,7 @@ public class Menu {
 		System.out.println("09 CERRAR SESION");
 
 		String eleccion = escaner.nextLine();
-
+		
 		if (eleccion.equals("01")) {
 
 			imprimirMenuExtracciones(escaner);
@@ -68,6 +63,9 @@ public class Menu {
 		} else if(eleccion.equals("09")) {
 		
 			imprimirMenuCerrarSesion();
+		} else {
+			
+			System.err.println("Ingrese una opcion valida");
 		}
 		
 		generarSaltosDeLinea();
@@ -155,10 +153,15 @@ public class Menu {
 			System.out.println("INGRESE EL ALIAS DE LA CUENTA A TRANSFERIR");
 			String aliasATransferir = escaner.nextLine();
 			
-			if(cajero.existeCuenta(aliasATransferir) && cajero.noEsCajaDeAhorroDolares(aliasATransferir)) {
+			if(!alias.equals(aliasATransferir) && cajero.existeCuenta(aliasATransferir) && cajero.noEsCajaDeAhorroDolares(aliasATransferir)) {
 				
 				int monto = mostrarMontos(escaner);
-				cajero.realizarTransferencia(alias, aliasATransferir, monto);	
+				cajero.realizarTransferencia(alias, aliasATransferir, monto);		
+			}	
+			
+			else {
+				
+				System.err.println("NO PODES TRANSFERIR A LA MISMA CUENTA");
 			}
 		}
 	}
@@ -190,7 +193,7 @@ public class Menu {
 			System.out.println("INGRESE EL ALIAS DE LA CAJA DE AHORRO EN DOLARES");
 			String aliasDolares = escaner.nextLine();
 			
-			if(cajero.existeCuenta(aliasDolares) && !cajero.noEsCajaDeAhorroDolares(aliasDolares)) {
+			if(cajero.existeCuenta(aliasDolares) && cajero.esCajaDeAhorroDolares(aliasDolares)) {
 			
 				System.out.println("ELIJA EL MONTO DE DOLARES A COMPRAR\n");
 				int monto = mostrarMontos(escaner);
@@ -220,62 +223,82 @@ public class Menu {
 	}
 
 	private int mostrarMontos(Scanner escaner) {
-
-		System.out.println("      SELECCIONE EL MONTO\n");
-		System.out.println("01 $ 5000          05     $ 300");
-		System.out.println("02 $ 2000          06     $ 200");
-		System.out.println("03 $ 1000          07     $ 100");
-		System.out.println("04 $ 500           08   OTRO MONTO");
-
+		
 		int monto = 0;
-		String eleccion = escaner.nextLine();
-
-		if (eleccion.equals("08")) {
-
-			System.out.println("INGRESE EL MONTO");
-			monto = escaner.nextInt();
+		String eleccion = null;
+		boolean importeValido = false;
+		
+		while(!importeValido) {
 			
-			if(monto % 100 != 0) {
+			System.out.println("      SELECCIONE EL MONTO\n");
+			System.out.println("01 $ 5000          05     $ 300");
+			System.out.println("02 $ 2000          06     $ 200");
+			System.out.println("03 $ 1000          07     $ 100");
+			System.out.println("04 $ 500           08   OTRO MONTO");
+			
+			eleccion = escaner.nextLine();
+
+			if (eleccion.equals("01")) {
+
+				monto = 5000;
+				importeValido = true; 
 				
-				System.err.println("No se puede seleccionar montos que no sean multiplos de 100");
-				mostrarMontos(new Scanner(System.in));
+			} else if (eleccion.equals("02")) {
+
+				monto = 2000;importeValido = true;
+				
+			} else if (eleccion.equals("03")) {
+
+				monto = 1000;importeValido = true;
+
+			} else if (eleccion.equals("04")) {
+
+				monto = 500;importeValido = true;
+
+			} else if (eleccion.equals("05")) {
+
+				monto = 300;importeValido = true;
+				
+			} else if (eleccion.equals("06")) {
+
+				monto = 200;importeValido = true;
+				
+			} else if (eleccion.equals("07")) {
+
+				monto = 100;importeValido = true;
+				
+			} else if (eleccion.equals("08")) {
+				
+				System.out.println("INGRESE EL MONTO");
+
+				String valor = escaner.nextLine();
+				
+				try {
+					
+					monto = Integer.valueOf(valor);
+					
+					if(monto % 100 != 0) {
+						
+						System.err.println("No se puede seleccionar montos que no sean multiplos de 100");	
+						
+					}else {
+						
+						importeValido = true;
+					}
+					
+				} catch (NumberFormatException error) {
+					
+					System.err.println("Debe ingresar un numero como valor");
+				}
+				
+				
+		
+			} else{
+
+				System.err.println("Ingrese un monto valido\n");
 			}
-	
-		} else if (eleccion.equals("01")) {
-
-			monto = 5000;
-			
-		} else if (eleccion.equals("02")) {
-
-			monto = 2000;
-			
-		} else if (eleccion.equals("03")) {
-
-			monto = 1000;
-
-		} else if (eleccion.equals("04")) {
-
-			monto = 500;
-
-		} else if (eleccion.equals("05")) {
-
-			monto = 300;
-			
-		} else if (eleccion.equals("06")) {
-
-			monto = 200;
-			
-		} else if (eleccion.equals("07")) {
-
-			monto = 100;
-			
-		} else{
-
-			System.err.println("Ingrese un monto valido\n");
-			mostrarMontos(escaner);
 		}
-
+		
 		return monto;
-
 	}
 }
