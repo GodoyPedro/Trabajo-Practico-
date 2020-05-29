@@ -14,17 +14,13 @@ public class Menu {
 
 		Scanner escaner = new Scanner(System.in);
 		generarSaltosDeLinea();
-		System.out.println(" BIENVENIDO AL CAJERO COVIDENTE\n");
-		System.out.println("SELECCIONE EL  TIPO DE OPERACION\n     QUE DESEA EFECTUAR\n");
-		System.out.println("01 EXTRACCIONES");
-		System.out.println("02 COMPRAR DOLARES");
-		System.out.println("03 DEPOSITOS");
-		System.out.println("04 TRANSFERENCIAS");
+		System.out.println("           BIENVENIDO AL CAJERO COVIDENTE\n");
+		System.out.println("          SELECCIONE EL  TIPO DE OPERACION\n                 QUE DESEA EFECTUAR\n");
+		System.out.println("01 EXTRACCIONES               06 REVERTIR TRANSFERENCIA");
+		System.out.println("02 COMPRAR DOLARES            07 CONSULTAR MOVIMIENTOS");
+		System.out.println("03 DEPOSITOS                  08 CONSULTAR ALIAS");
+		System.out.println("04 TRANSFERENCIAS             09 CERRAR SESION");
 		System.out.println("05 CONSULTAR SALDO");
-		System.out.println("06 REVERTIR TRANSFERENCIA");
-		System.out.println("07 CONSULTAR MOVIMIENTOS");
-		System.out.println("08 CONSULTAR ALIAS");	
-		System.out.println("09 CERRAR SESION");
 
 		String eleccion = escaner.nextLine();
 		
@@ -74,8 +70,8 @@ public class Menu {
 
 	private void imprimirMenuCerrarSesion() {
 		
-		System.out.println("       MUCHAS GRACIAS\n"
-				+ "NO OLVIDE RETIRAR SU TARJETA");
+		System.out.println("                   MUCHAS GRACIAS\n"
+				+ "            NO OLVIDE RETIRAR SU TARJETA");
 		cajero.cerrarSesion();
 		
 		
@@ -301,4 +297,3 @@ public class Menu {
 		
 		return monto;
 	}
-}
