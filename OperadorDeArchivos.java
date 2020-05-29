@@ -98,7 +98,7 @@ public class OperadorDeArchivos {
 		catch (ErrorDatosInvalidos error) {
 			
 			System.err.println(error.getMessage());
-			System.exit(1);
+
 		}
 		
 		catch (ErrorArchivoVacio error) {
