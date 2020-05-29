@@ -1,3 +1,4 @@
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -22,7 +23,7 @@ public class FechaYHora {
 		
 	}
 	
-	public String devolverFechaYHora() {
+	public String obtenerFechaYHora() {
 		
 		actualizarHora();
 		return fecha + "," + hora;
