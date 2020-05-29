@@ -16,11 +16,11 @@ public class Menu {
 		generarSaltosDeLinea();
 		System.out.println("           BIENVENIDO AL CAJERO COVIDENTE\n");
 		System.out.println("          SELECCIONE EL  TIPO DE OPERACION\n                 QUE DESEA EFECTUAR\n");
-		System.out.println("01 EXTRACCIONES               06 REVERTIR TRANSFERENCIA");
-		System.out.println("02 COMPRAR DOLARES            07 CONSULTAR MOVIMIENTOS");
-		System.out.println("03 DEPOSITOS                  08 CONSULTAR ALIAS");
-		System.out.println("04 TRANSFERENCIAS             09 CERRAR SESION");
-		System.out.println("05 CONSULTAR SALDO");
+		System.out.println("1 EXTRACCIONES               6 REVERTIR TRANSFERENCIA");
+		System.out.println("2 COMPRAR DOLARES            7 CONSULTAR MOVIMIENTOS");
+		System.out.println("3 DEPOSITOS                  8 CONSULTAR ALIAS");
+		System.out.println("4 TRANSFERENCIAS             9 CERRAR SESION");
+		System.out.println("5 CONSULTAR SALDO");
 
 		String eleccion = escaner.nextLine();
 		
