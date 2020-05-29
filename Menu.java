@@ -14,8 +14,8 @@ public class Menu {
 
 		Scanner escaner = new Scanner(System.in);
 		generarSaltosDeLinea();
-		System.out.println("           BIENVENIDO AL CAJERO COVIDENTE\n");
-		System.out.println("          SELECCIONE EL  TIPO DE OPERACION\n                 QUE DESEA EFECTUAR\n");
+		System.out.println("          BIENVENIDO AL CAJERO COVIDENTE\n");
+		System.out.println("         SELECCIONE EL  TIPO DE OPERACION\n                QUE DESEA EFECTUAR\n");
 		System.out.println("1 EXTRACCIONES               6 REVERTIR TRANSFERENCIA");
 		System.out.println("2 COMPRAR DOLARES            7 CONSULTAR MOVIMIENTOS");
 		System.out.println("3 DEPOSITOS                  8 CONSULTAR ALIAS");
@@ -24,39 +24,39 @@ public class Menu {
 
 		String eleccion = escaner.nextLine();
 		
-		if (eleccion.equals("01")) {
+		if (eleccion.equals("1")) {
 
 			imprimirMenuExtracciones(escaner);
 
-		} else if (eleccion.equals("02")) {
+		} else if (eleccion.equals("2")) {
 
 			imprimirMenuCompraDolares(escaner);
 
-		} else if (eleccion.equals("03")) {
+		} else if (eleccion.equals("3")) {
 
 			imprimirMenuDepositos(escaner);
 		
-		} else if (eleccion.equals("04")) {
+		} else if (eleccion.equals("4")) {
 
 			imprimirMenuTransferencia(escaner);
 
-		} else if (eleccion.equals("05")) {
+		} else if (eleccion.equals("5")) {
 			
 			imprimirMenuConsultarSaldo(escaner);
 			
-		} else if (eleccion.equals("06")) {
+		} else if (eleccion.equals("6")) {
 	
 			imprimirMenuRevertirTransferencia(); 
 			
-		} else if (eleccion.equals("07")) {
+		} else if (eleccion.equals("7")) {
 
 			imprimirMenuMovimientos(escaner); 
 		
-		} else if (eleccion.equals("08")) {
+		} else if (eleccion.equals("8")) {
 
 			imprimirMenuAlias();
 		
-		} else if(eleccion.equals("09")) {
+		} else if(eleccion.equals("9")) {
 		
 			imprimirMenuCerrarSesion();
 		} else {
@@ -226,44 +226,44 @@ public class Menu {
 		
 		while(!importeValido) {
 			
-			System.out.println("      SELECCIONE EL MONTO\n");
-			System.out.println("01 $ 5000          05     $ 300");
-			System.out.println("02 $ 2000          06     $ 200");
-			System.out.println("03 $ 1000          07     $ 100");
-			System.out.println("04 $ 500           08   OTRO MONTO");
+			System.out.println("     SELECCIONE EL MONTO\n");
+			System.out.println("1 $ 5000          5     $ 300");
+			System.out.println("2 $ 2000          6     $ 200");
+			System.out.println("3 $ 1000          7     $ 100");
+			System.out.println("4 $ 500           8   OTRO MONTO");
 			
 			eleccion = escaner.nextLine();
 
-			if (eleccion.equals("01")) {
+			if (eleccion.equals("1")) {
 
 				monto = 5000;
 				importeValido = true; 
 				
-			} else if (eleccion.equals("02")) {
+			} else if (eleccion.equals("2")) {
 
 				monto = 2000;importeValido = true;
 				
-			} else if (eleccion.equals("03")) {
+			} else if (eleccion.equals("3")) {
 
 				monto = 1000;importeValido = true;
 
-			} else if (eleccion.equals("04")) {
+			} else if (eleccion.equals("4")) {
 
 				monto = 500;importeValido = true;
 
-			} else if (eleccion.equals("05")) {
+			} else if (eleccion.equals("5")) {
 
 				monto = 300;importeValido = true;
 				
-			} else if (eleccion.equals("06")) {
+			} else if (eleccion.equals("6")) {
 
 				monto = 200;importeValido = true;
 				
-			} else if (eleccion.equals("07")) {
+			} else if (eleccion.equals("7")) {
 
 				monto = 100;importeValido = true;
 				
-			} else if (eleccion.equals("08")) {
+			} else if (eleccion.equals("8")) {
 				
 				System.out.println("INGRESE EL MONTO");
 
