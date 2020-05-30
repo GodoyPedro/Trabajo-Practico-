@@ -3,7 +3,7 @@ import java.util.List;
 
 public class ConsultarAlias extends Operacion {
 
-	public List<String> devolverListaAlias(List<Cuenta> listaCuentas) {
+	public List<String> obtenerListaAlias(List<Cuenta> listaCuentas) {
 		
 		List<String> listaAlias = new LinkedList<String>();
 		
