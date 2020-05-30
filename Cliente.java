@@ -15,7 +15,7 @@ public class Cliente {
 		listaCuentas = baseDatos.analizarArchivoClientes(cuit);	
 	}
 
-	public Cuenta devolverCuenta(String alias){
+	public Cuenta obtenerCuenta(String alias){
 	
 		for(Cuenta cuenta: listaCuentas) {
 			
@@ -28,12 +28,12 @@ public class Cliente {
 		return null;
 	}
 	
-	public List<String> devolverListaMovimientos(){
+	public List<String> obtenerListaMovimientos(){
 		
 		return movimientos;
 	}
 	
-	public List<Cuenta> devolverListaCuentas(){
+	public List<Cuenta> obtenerListaCuentas(){
 		
 		return listaCuentas;
 	}
