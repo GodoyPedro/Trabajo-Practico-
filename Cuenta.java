@@ -42,7 +42,7 @@ public abstract class Cuenta {
     }
     
     //Este metodo seria el "depositar"
-    public void agregarSaldo(int saldo) throws ErrorAlIntroducirSaldo {
+    public void depositarSaldo(int saldo) throws ErrorAlIntroducirSaldo {
     	if(saldo < 0){
     		throw new ErrorAlIntroducirSaldo();
     	}
@@ -59,5 +59,5 @@ public abstract class Cuenta {
     }
     
     //Este metodo seria el "retirar"
-    public abstract void quitarSaldo(double saldo) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo;
+    public abstract void retirarSaldo(double saldo) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo;
 }
