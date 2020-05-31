@@ -1,17 +1,16 @@
-package pruebas;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import predeterminado.CajaDeAhorroDolares;
-import predeterminado.CajaDeAhorroPesos;
-import predeterminado.ComprarDolares;
-import predeterminado.Cuenta;
-import predeterminado.CuentaCorriente;
-import predeterminado.Deposito;
-import predeterminado.ErrorAlIntroducirSaldo;
-import predeterminado.ErrorCuentaInvalida;
-import predeterminado.ErrorSaldoInsuficiente;
+import CajaDeAhorroDolares;
+import CajaDeAhorroPesos;
+import ComprarDolares;
+import Cuenta;
+import CuentaCorriente;
+import Deposito;
+import ErrorAlIntroducirSaldo;
+import ErrorCuentaInvalida;
+import ErrorSaldoInsuficiente;
 
 public class ComprarDolaresTest {
 
