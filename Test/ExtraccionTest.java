@@ -1,4 +1,3 @@
-package pruebas;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,17 +6,17 @@ import java.io.PrintStream;
 import org.junit.Assert;
 import org.junit.Test;
 
-import predeterminado.CajaDeAhorroDolares;
-import predeterminado.CajaDeAhorroPesos;
-import predeterminado.Cajero;
-import predeterminado.Cuenta;
-import predeterminado.CuentaCorriente;
-import predeterminado.Deposito;
-import predeterminado.ErrorAlIntroducirSaldo;
-import predeterminado.ErrorCuentaInvalida;
-import predeterminado.ErrorSaldoInsuficiente;
-import predeterminado.Extraccion;
-import predeterminado.Tarjeta;
+import CajaDeAhorroDolares;
+import CajaDeAhorroPesos;
+import Cajero;
+import Cuenta;
+import CuentaCorriente;
+import Deposito;
+import ErrorAlIntroducirSaldo;
+import ErrorCuentaInvalida;
+import ErrorSaldoInsuficiente;
+import Extraccion;
+import Tarjeta;
 
 
 public class ExtraccionTest {
