@@ -1,12 +1,11 @@
-package pruebas;
 
 import org.junit.Assert;
 import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import predeterminado.BaseDeDatos;
-import predeterminado.Tarjeta;
+import BaseDeDatos;
+import Tarjeta;
 
 public class TarjetaTest {
 
