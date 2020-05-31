@@ -1,14 +1,13 @@
-package pruebas;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import predeterminado.CajaDeAhorroDolares;
-import predeterminado.CajaDeAhorroPesos;
-import predeterminado.Cuenta;
-import predeterminado.CuentaCorriente;
-import predeterminado.ErrorAlIntroducirSaldo;
-import predeterminado.Deposito;
+import CajaDeAhorroDolares;
+import CajaDeAhorroPesos;
+import Cuenta;
+import CuentaCorriente;
+import ErrorAlIntroducirSaldo;
+import Deposito;
 
 
 public class DepositoTest {
