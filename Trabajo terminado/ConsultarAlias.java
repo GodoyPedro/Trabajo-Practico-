@@ -2,8 +2,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ConsultarAlias extends Operacion {
-	
-	//Devuelve todos los alias de todas las cuentas del usuario.
+
+	/**
+	 * post: Devuelve todos los alias de todas las cuentas del usuario.
+	 * @param listaCuentas
+	 * @return
+	 */
 	public List<String> obtenerListaAlias(List<Cuenta> listaCuentas) {
 		
 		List<String> listaAlias = new LinkedList<String>();
@@ -16,3 +20,4 @@ public class ConsultarAlias extends Operacion {
 		return listaAlias;
 	}	
 }
+
