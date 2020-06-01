@@ -1,4 +1,6 @@
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class Cajero {
 	
@@ -48,18 +50,16 @@ public class Cajero {
 			Cuenta cuenta = obtenerCliente().obtenerCuenta(alias);
 			
 			boolean cajeroTieneBilletesSuficientes = comprobarDisponibilidadDeBilletes(monto, cantidadDeBilletes.length);
-			
-			System.out.println(cajeroTieneBilletesSuficientes+" monto: "+monto);
-			
+						
 			String movimiento = null;
 			
-			if(monto > 0) {
+			if(monto > 0 ) {
 				
-				if(cajeroTieneBilletesSuficientes) {
-					
-					billetes = dispensarBilletes(monto);
+				if(cajeroTieneBilletesSuficientes) {			
 					
 					operacionExtraer.extraerFondos(cuenta, monto);
+					
+					billetes = dispensarBilletes(monto);
 
 					movimiento = obtenerFechaYHora().obtenerFechaYHoraActual() + "," + cuenta.obtenerAlias() + ","
 							+ "Extraccion" + "," + monto + "," + cuenta.obtenerSaldo();
@@ -68,8 +68,8 @@ public class Cajero {
 					operacionHistorial.agregarMovimiento(obtenerCliente().obtenerListaMovimientos(),
 							movimiento);	
 					
-					System.out.println(imprimirTicket(movimiento));
-					baseDatos.escribirArchivoMovimientos(obtenerCliente().obtenerListaMovimientos());
+					System.out.println(imprimirTicket(movimiento));					
+					baseDatos.escribirArchivoMovimientos(formatearListaMovimientosGenerales(obtenerCliente().obtenerListaMovimientos()));
 					baseDatos.escribirArchivoTickets(movimiento);
 				}
 				else {
@@ -91,6 +91,7 @@ public class Cajero {
 		return estado;
 	}
 	
+
 	public void comprarDolares(String alias, String aliasDolares, int dolares) {
 
 		try {
@@ -118,7 +119,7 @@ public class Cajero {
 
 		
 			System.out.println(imprimirTicket(movimientoTicket));		
-			baseDatos.escribirArchivoMovimientos(obtenerCliente().obtenerListaMovimientos());
+			baseDatos.escribirArchivoMovimientos(formatearListaMovimientosGenerales(obtenerCliente().obtenerListaMovimientos()));
 			baseDatos.escribirArchivoTickets(movimiento);
 		}
 		catch (ErrorSaldoInsuficiente | ErrorAlIntroducirSaldo e) {
@@ -139,11 +140,10 @@ public class Cajero {
 					+ "Deposito" + "," + monto + "," + cuenta.obtenerSaldo();
 
 			operacionHistorial.agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
-			operacionHistorial.agregarMovimiento(obtenerCliente().obtenerListaMovimientos(),
-					movimiento);
+			operacionHistorial.agregarMovimiento(obtenerCliente().obtenerListaMovimientos(),movimiento);
 
 			System.out.println(imprimirTicket(movimiento));
-			baseDatos.escribirArchivoMovimientos(obtenerCliente().obtenerListaMovimientos());
+			baseDatos.escribirArchivoMovimientos(formatearListaMovimientosGenerales(obtenerCliente().obtenerListaMovimientos()));
 			baseDatos.escribirArchivoTickets(movimiento);
 		}
 		catch (ErrorAlIntroducirSaldo e) {
@@ -170,14 +170,12 @@ public class Cajero {
 					+ "Transferencia" + "," + monto + "," + cuenta.obtenerSaldo() + "," + cuentaATransferir.obtenerSaldo();
 
 			operacionHistorial.agregarMovimiento(cuenta.obtenerListaMovimientos(), movimiento);
-			operacionHistorial.agregarMovimiento(cuentaATransferir.obtenerListaMovimientos(),
-					movimientoTransferido);
+			operacionHistorial.agregarMovimiento(cuentaATransferir.obtenerListaMovimientos(),movimientoTransferido);
 			operacionHistorial.agregarMovimiento(obtenerCliente().obtenerListaMovimientos(), movimiento);
-			operacionHistorial.agregarMovimiento(obtenerCliente().obtenerListaMovimientos(),
-					movimientoTransferido);
+			operacionHistorial.agregarMovimiento(obtenerCliente().obtenerListaMovimientos(),movimientoTransferido);
 
 			System.out.println(imprimirTicket(movimientoTicket));
-			baseDatos.escribirArchivoMovimientos(obtenerCliente().obtenerListaMovimientos());
+			baseDatos.escribirArchivoMovimientos(formatearListaMovimientosGenerales(obtenerCliente().obtenerListaMovimientos()));
 			baseDatos.escribirArchivoTickets(movimientoTicket);
 		}
 		
@@ -232,7 +230,7 @@ public class Cajero {
 				
 				System.out.println(imprimirTicket(movimientoTicket));
 				
-				baseDatos.escribirArchivoMovimientos(obtenerCliente().obtenerListaMovimientos());
+				baseDatos.escribirArchivoMovimientos(formatearListaMovimientosGenerales(obtenerCliente().obtenerListaMovimientos()));
 				baseDatos.escribirArchivoTickets(movimientoTicket);
 								
 				estado = 1;
@@ -248,6 +246,21 @@ public class Cajero {
 		}
 		
 		return estado;
+	}
+    
+    private List<String> formatearListaMovimientosGenerales(List<String> movimientosGenerales) {
+
+		List<String> listaMovimientosFormateados = new LinkedList<String>();
+		
+		for(String movimiento : movimientosGenerales) {
+			
+			String[] movimientosSeparados = movimiento.split(",");
+		
+			listaMovimientosFormateados.add(movimientosSeparados[0]+","+movimientosSeparados[3]+","
+					+movimientosSeparados[2]+","+movimientosSeparados[4]);
+		}
+		
+		return listaMovimientosFormateados;
 	}
     
 	public List<String> obtenerMovimientos(String alias) {
@@ -375,6 +388,8 @@ public class Cajero {
 	}
 	
 	private boolean comprobarDisponibilidadDeBilletes(int monto, int longitud) {
+		
+		billetes = null;
 		
 		int[] montos = {1000,500,100};
 		
