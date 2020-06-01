@@ -6,19 +6,6 @@ import java.io.PrintStream;
 import org.junit.Assert;
 import org.junit.Test;
 
-import CajaDeAhorroDolares;
-import CajaDeAhorroPesos;
-import Cajero;
-import Cuenta;
-import CuentaCorriente;
-import Deposito;
-import ErrorAlIntroducirSaldo;
-import ErrorCuentaInvalida;
-import ErrorSaldoInsuficiente;
-import Extraccion;
-import Tarjeta;
-
-
 public class ExtraccionTest {
 
 	private Extraccion extraccion = new Extraccion();
