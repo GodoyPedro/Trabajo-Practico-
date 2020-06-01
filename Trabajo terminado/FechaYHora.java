@@ -23,14 +23,18 @@ public class FechaYHora {
 		
 		
 	}
-	
+	/*
+	 * post: Devuelve la fecha y hora actualizada
+	 */
 	public String obtenerFechaYHoraActual() {
 		
 		actualizarHora();
 		return fecha + "," + hora;
 	}
 	
-	
+	/**
+	 * post: Actualiza la hora que vaya a tener el movimiento realizado
+	 */
 	private void actualizarHora() {
 		
 		dia.setTimeZone(horario);
