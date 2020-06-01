@@ -283,6 +283,10 @@ public class Menu {
 				}
 				else if (operacion.equals("Deposito")){
 					
+					if(monto % 10 != 0) {
+						
+						System.err.println("Solo se pueden depositar multiplos de 10");
+					}
 					corte = !(monto % 10 == 0);
 				}
 				else if (operacion.equals("Extraccion")){
