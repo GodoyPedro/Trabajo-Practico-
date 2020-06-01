@@ -1,10 +1,22 @@
 public class CajaDeAhorroPesos extends Cuenta {
-
+	/**
+	 * pre: El saldo debe ser mayor a cero, el alias debe ser valido.
+	 * post: Se crea una Caja de ahorro en pesos
+	 * 
+	 * @param alias
+	 * @param saldo
+	 * @throws ErrorAlIntroducirSaldo
+	 */
 	public CajaDeAhorroPesos(String alias, double saldo) throws ErrorAlIntroducirSaldo {
 		super(alias, saldo);
 	}
 
 	@Override
+	/**
+	 * pre: El saldo debe ser mayor a cero
+	 * post Se extrae saldo de la Caja de Ahorro
+	 * 
+	 */
 	public void retirarSaldo(double saldo) throws ErrorSaldoInsuficiente, ErrorAlIntroducirSaldo{
 		if(saldo > this.saldo){
 			throw new ErrorSaldoInsuficiente();
