@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -11,8 +10,17 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Todo lo relacionado con escritura y lectura de archivos esta hecho en esta clase
+ */
 public class OperadorDeArchivos {
 	
+	/**
+	 * Implemento una busqueda binaria para optimizar la busqueda del cuit del usuario
+	 * @param lista
+	 * @param numeroTarjeta
+	 * @return
+	 */
 	private int busquedaBinaria(List<String> lista, String numeroTarjeta) {
 		
 		int inicio=0;				
@@ -44,9 +52,7 @@ public class OperadorDeArchivos {
 				}
 			}
 		}
-		
-		
-
+	
 		catch (NumberFormatException error){
 			
 			System.err.println("Ingrese un numero valido de tarjeta, intente nuevamente");
@@ -76,7 +82,6 @@ public class OperadorDeArchivos {
 		try {
 			
 			contenidoDelArchivo = Files.readAllLines(p);
-			
 			if(contenidoDelArchivo.size() == 0) {
 				
 				throw new ErrorArchivoVacio("El archivo esta vacio");
@@ -99,7 +104,6 @@ public class OperadorDeArchivos {
 		catch (ErrorArchivoVacio | ErrorDatosInvalidos error) {
 
 			System.err.println(error.getMessage());
-//			System.exit(1);
 		}
 	
 		catch (NoSuchFileException error) {
@@ -110,7 +114,8 @@ public class OperadorDeArchivos {
 			
 		catch (IOException error) {
 			
-			error.printStackTrace();
+			System.err.println("Ocurrio un error inesperado");
+			System.exit(1);
 		}
 		
 		return datosTarjeta;
@@ -143,20 +148,24 @@ public class OperadorDeArchivos {
 				}
 			}
 			
-		} catch (FileNotFoundException e) {
+		} catch (NoSuchFileException | FileNotFoundException error) {
 			
-			e.printStackTrace();
+			System.err.println("El archivo no existe, no esta en el directorio correcto o no tiene el nombre correcto");
+			System.exit(1);
 			
 		} catch (IOException e) {
 
-			e.printStackTrace();
+			System.err.println("Ocurrio un error inesperado");
+			System.exit(1);
+			
 		} finally {
 			
 			try {
 				lector.close();
 			} catch (IOException e) {
 				
-				e.printStackTrace();
+				System.err.println("Ocurrio un error inesperado");
+				System.exit(1);
 			}
 		}
 		return listaAlias;	
@@ -222,27 +231,39 @@ public class OperadorDeArchivos {
 				}			
 			}
 			
-		} catch (FileNotFoundException e) {
+		} 
+		catch (FileNotFoundException | NoSuchFileException e) {
 			
-			e.printStackTrace();
+			System.err.println("El archivo no existe, no esta en el directorio correcto o no tiene el nombre correcto");
+			System.exit(1);
 			
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			
-			e.printStackTrace();
+			System.err.println("Ocurrio un error inesperado");
+			System.exit(1);
 			
-		} finally {
+		} 
+		
+		finally {
 			
 			try {
-				lector.close();
-			} catch (IOException e) {
 				
-				e.printStackTrace();
+				lector.close();
+			} 
+			catch (IOException e) {
+				
+				System.err.println("Ocurrio un error inesperado");
+				System.exit(1);
 			}
 		}
 
 		return listaCuentas;
 	}
-	
+	/**
+	 * Escribo el archivo de los movimientos que realiza el usuario con el formato (fecha,concepto,alias,monto)
+	 * @param movimientos
+	 */
 	public void  escribirArchivoMovimientos(List<String> movimientos){
 		
 		FileWriter escritor = null;
@@ -256,46 +277,56 @@ public class OperadorDeArchivos {
 				for(String movimiento: movimientos) {
 					
 					escritor.write(movimiento + System.lineSeparator());
-
 				}
-				
-			} finally {
+			} 
+			
+			finally {
 				
 				escritor.close();
-			}
-				
-		} catch (IOException e) {
+			}			
+		} 
+		
+		catch (IOException e) {
 			
-			e.printStackTrace();
-
+			System.err.println("Ocurrio un error inesperado");
+			System.exit(1);
 		}	
 	}
-	
+	/**
+	 * Guardo todos los tickets de las operaciones realizadas por el usuario en un archivo
+	 * @param datos
+	 */
 	public void escribirArchivoTickets(String datos) {
-		
+	
+
 		FileWriter escritor = null;
 		
 		try {
 			
 			try {
 				
-				escritor = new FileWriter("./txt/Tickets.txt",true);
+				escritor = new FileWriter("./txt/Tickets.txt");
 
 				escritor.write(datos + System.lineSeparator());	
 				
-			} finally {
+			}
+			finally {
 				
 				escritor.close();
-			}
-				
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-
-		}	
+			}				
+		} 
 		
+		catch (IOException e) {
+			
+			System.err.println("Ocurrio un error inesperado");
+			System.exit(1);
+
+		}			
 	}
-	
+	/**
+	 * Guardo los alias que tiene la cuenta del usuario
+	 * @param datos
+	 */
 	public void escritorArchivoAlias(List<String> datos) {
 		
 		FileWriter escritor = null;
@@ -304,23 +335,24 @@ public class OperadorDeArchivos {
 			
 			try {
 				
-				escritor = new FileWriter("./txt/Alias.txt",true);
+				escritor = new FileWriter("./txt/Alias.txt");
 				
 				for(String alias: datos) {
 				
 					escritor.write(alias + System.lineSeparator());	
-				}
-				
-			} finally {
+				}			
+			} 
+			
+			finally {
 				
 				escritor.close();
-			}
-				
-		} catch (IOException e) {
+			}				
+		} 
+	
+		catch (IOException e) {
 			
-			e.printStackTrace();
-
+			System.err.println("Ocurrio un error inesperado");
+			System.exit(1);
 		}
 	}
-
 }
