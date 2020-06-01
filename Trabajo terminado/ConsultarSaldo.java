@@ -1,7 +1,11 @@
 
 public class ConsultarSaldo extends Operacion {
 	
-	//Devuelve el saldo de la cuenta indicada.
+	/**
+	 * post: Devuelve el saldo de la cuenta indicada.
+	 * @param cuenta
+	 * @return
+	 */
 	public double consultarSaldo(Cuenta cuenta) {
 		
 		return cuenta.obtenerSaldo();
