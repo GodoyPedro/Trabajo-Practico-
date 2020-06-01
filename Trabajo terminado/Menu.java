@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Menu {
@@ -115,7 +114,6 @@ public class Menu {
 		
 		String alias = escaner.nextLine();
 		
-		
 		if(cajero.comprobarExistenciaDeCuenta(alias)) {
 				
 			if(!cajero.obtenerMovimientos(alias).isEmpty()) {
@@ -126,26 +124,26 @@ public class Menu {
 					
 					String[] datosArray = movimiento.split(",");
 					
-					System.out.println("-----------------------------------------------");
+					System.out.println("");
 					
 					if(datosArray.length == 6) {
 						
-						movimiento = String.format("Fecha:         Hora:\n%s    %s\n"
-								+ "\nTipo de operacion:\t%s\nAlias de la cuenta:\t%s\nImporte involucrado:\t%.2f\nSaldo final:\t\t%.2f"
+						movimiento = String.format("-----------------------------------------------\nFecha:         Hora:\n%s    %s\n"
+								+ "\nTipo de operacion:\t%s\nAlias de la cuenta:\t%s\nImporte involucrado:\t%.2f\nSaldo final:\t\t%.2f\n"
+								+ "-----------------------------------------------"
 								
 								,datosArray[0],datosArray[1],datosArray[3],datosArray[2],Double.valueOf(datosArray[4]),Double.valueOf(datosArray[5]));
 					}
 					
 					else {
 						
-						movimiento = String.format("Fecha:         Hora:\n%s    %s\n"
+						movimiento = String.format("-----------------------------------------------\nFecha:         Hora:\n%s    %s\n"
 								+ "\nTipo de operacion:\t%s\nAlias de la cuenta a debitar:\t%s\nAlias de la cuenta a acreditar:\t%s\nImporte involucrado:\t%.2f\n"
-								+ "Saldo final cuenta debitada:\t\t%.2f\nSaldo final cuenta acreditada:\t\t%.2f"
+								+ "Saldo final cuenta debitada:\t\t%.2f\nSaldo final cuenta acreditada:\t\t%.2f\n"
+								+ "-----------------------------------------------"
 								
 								,datosArray[0],datosArray[1],datosArray[4],datosArray[2],datosArray[3],Double.valueOf(datosArray[5]),Double.valueOf(datosArray[6]),Double.valueOf(datosArray[7]));
 					}
-					
-					System.out.println(movimiento);
 				}
 			}
 			else {
@@ -253,16 +251,17 @@ public class Menu {
 				System.err.println("El saldo a introducir debe ser positivo");
 			}
 			
-			System.out.println(Arrays.toString(cajero.obtenerBilletes()));
-			
-			String[] leyendasBilletes = {"Billetes de 1000: ","Billetes de 500: ","Billetes de 100: "};
 			String[] billetes = cajero.obtenerBilletesAExtraer();
-			
-			for (int i = 0; i < billetes.length; i++) {
+						
+			if(billetes != null) {
 				
-				System.out.println(leyendasBilletes[i]+billetes[i]);
-			}
-			
+				String[] leyendasBilletes = {"Billetes de 1000: ","Billetes de 500: ","Billetes de 100: "};
+				
+				for (int i = 0; i < billetes.length; i++) {
+					
+					System.out.println(leyendasBilletes[i]+billetes[i]);
+				}
+			}	
 		}
 	}
 
