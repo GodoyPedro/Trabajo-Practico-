@@ -226,7 +226,7 @@ public class OperadorDeArchivos {
 					}
 					catch (ErrorAlIntroducirSaldo e) {
 
-						System.out.println("El saldo introducido es invalido");
+						System.out.println(e.getMessage());
 					}							
 				}			
 			}
