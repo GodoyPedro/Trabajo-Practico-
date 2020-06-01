@@ -91,7 +91,6 @@ public class Cajero {
 		return estado;
 	}
 	
-
 	public void comprarDolares(String alias, String aliasDolares, int dolares) {
 
 		try {
@@ -160,7 +159,9 @@ public class Cajero {
 			Cuenta cuentaATransferir = obtenerCliente().obtenerCuenta(aliasATransferir);
 
 			operacionTransferir.transferir(cuenta, cuentaATransferir, monto);
-
+			
+			
+			
 			String movimiento = obtenerFechaYHora().obtenerFechaYHoraActual() + "," + cuenta.obtenerAlias() + ","
 					+ "Transferencia" + "," + (-monto) + "," + cuenta.obtenerSaldo();
 			String movimientoTransferido = obtenerFechaYHora().obtenerFechaYHoraActual() + ","
@@ -197,8 +198,7 @@ public class Cajero {
 		int estado = 0;
     	
 		List<String> movimientos = obtenerCliente().obtenerListaMovimientos();
-		
-		
+			
 		if(movimientos.size() > 0) {
 			
 			String[] lineaDeMovimiento = movimientos.get(movimientos.size() - 1).split(",");
@@ -247,6 +247,7 @@ public class Cajero {
 		
 		return estado;
 	}
+    
     
     private List<String> formatearListaMovimientosGenerales(List<String> movimientosGenerales) {
 
