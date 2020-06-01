@@ -2,18 +2,6 @@
 import org.junit.Assert;
 import org.junit.Test;
 
-import CajaDeAhorroDolares;
-import CajaDeAhorroPesos;
-import ComprarDolares;
-import ConsultarSaldo;
-import Cuenta;
-import CuentaCorriente;
-import Deposito;
-import ErrorAlIntroducirSaldo;
-import ErrorCuentaInvalida;
-import ErrorSaldoInsuficiente;
-import Extraccion;
-import Transferencia;
 
 public class ConsultarSaldoTest {
 
