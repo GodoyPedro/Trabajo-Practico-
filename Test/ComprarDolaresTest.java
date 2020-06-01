@@ -2,16 +2,6 @@
 import org.junit.Assert;
 import org.junit.Test;
 
-import CajaDeAhorroDolares;
-import CajaDeAhorroPesos;
-import ComprarDolares;
-import Cuenta;
-import CuentaCorriente;
-import Deposito;
-import ErrorAlIntroducirSaldo;
-import ErrorCuentaInvalida;
-import ErrorSaldoInsuficiente;
-
 public class ComprarDolaresTest {
 
 	private ComprarDolares compra = new ComprarDolares();
