@@ -2,13 +2,6 @@
 import org.junit.Assert;
 import org.junit.Test;
 
-import CajaDeAhorroDolares;
-import CajaDeAhorroPesos;
-import Cuenta;
-import CuentaCorriente;
-import ErrorAlIntroducirSaldo;
-import Deposito;
-
 
 public class DepositoTest {
 
