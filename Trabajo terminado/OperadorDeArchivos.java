@@ -305,7 +305,7 @@ public class OperadorDeArchivos {
 			
 			try {
 				
-				escritor = new FileWriter("./txt/Tickets.txt");
+				escritor = new FileWriter("./txt/Tickets.txt",true);
 
 				escritor.write(datos + System.lineSeparator());	
 				
