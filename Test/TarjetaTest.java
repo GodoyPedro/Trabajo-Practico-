@@ -4,9 +4,6 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import BaseDeDatos;
-import Tarjeta;
-
 public class TarjetaTest {
 
 	private Tarjeta tarjeta;
