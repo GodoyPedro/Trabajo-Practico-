@@ -5,16 +5,6 @@ import java.io.PrintStream;
 import org.junit.Assert;
 import org.junit.Test;
 
-import CajaDeAhorroDolares;
-import CajaDeAhorroPesos;
-import Cuenta;
-import CuentaCorriente;
-import ErrorAlIntroducirSaldo;
-import ErrorSaldoInsuficiente;
-
-import Tarjeta;
-import Transferencia;
-
 public class TransferenciaTest {
 
 	private Transferencia transferencia = new Transferencia();
