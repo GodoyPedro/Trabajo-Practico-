@@ -19,7 +19,7 @@ public class Transferencia extends Operacion implements Reversible {
 		// ambas cuentas.
 		if (cuenta1.obtenerAlias().equals(cuenta2.obtenerAlias())) {
 
-			System.err.println("NO PODES TRANSFERIR A LA MISMA CUENTA");
+			System.err.print("NO PODES TRANSFERIR A LA MISMA CUENTA");
 		}
 
 		// Si el usuario ingresa un alias que pertenece a una caja de ahorro en dólares,
@@ -27,7 +27,7 @@ public class Transferencia extends Operacion implements Reversible {
 		else if (cuenta1.getClass().getName().equals("CajaDeAhorroDolares")
 				|| cuenta2.getClass().getName().equals("CajaDeAhorroDolares")) {
 
-			System.err.println("NO SE PUEDE OPERAR CON UNA CUENTA EN DOLARES");
+			System.err.print("NO SE PUEDE OPERAR CON UNA CUENTA EN DOLARES");
 		}
 
 		cuenta1.retirarSaldo(montoATransferir);
