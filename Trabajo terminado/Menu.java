@@ -1,5 +1,8 @@
 import java.util.Scanner;
-
+/**
+ * Esta clase se encarga de todo lo relacionado con imprimir a la pantalla.
+ * Todo lo que el usuario puede ver por consola, sale de esta clase
+ */
 public class Menu {
 
 	private Cajero cajero;
@@ -9,7 +12,10 @@ public class Menu {
 		this.cajero = cajero;
 
 	}
-
+	
+	/**
+	 * Muestra el menu de opciones para que el usuario pueda operar
+	 */
 	public void desplegarInterfaz(){
 
 		Scanner escaner = new Scanner(System.in);
@@ -68,26 +74,33 @@ public class Menu {
 
 	}
 
+	/**
+	 * Menu de cerrar sesion, cierra la sesion en el cajero
+	 */
 	private void imprimirMenuCerrarSesion() {
 		
 		System.out.println("                   MUCHAS GRACIAS\n"
 				+ "            NO OLVIDE RETIRAR SU TARJETA");
-		cajero.cerrarSesion();
-		
-		
+		cajero.cerrarSesion();	
 	}	
 
+	/**
+	 * Muestra los alias de las cuentas del usuario
+	 */
 	private void imprimirMenuAlias() {
 	
 		System.out.println("Sus cuentas son:\n");
 		
-		for(Cuenta cuenta: cajero.obtenerAlias()) {
+		for(Cuenta cuenta: cajero.obtenerListaCuentas()) {
 			
 			System.out.println(String.format("Tipo: %s\t\tAlias: %s", cuenta.getClass().getName(),cuenta.obtenerAlias()));
 		}
 	
 	}
-
+	
+	/**
+	 * Se muestra una leyenda dependiendo de si se pudo realizar la operacion o no
+	 */
 	private void imprimirMenuRevertirTransferencia() {
 		
 		int estado = cajero.revertirTransferencia();
@@ -108,68 +121,85 @@ public class Menu {
 		}
 	}
 
+	/**
+	 * Muestra como maximo los ultimos 10 movimientos de la cuenta solicitada por el usuario
+	 * @param escaner
+	 */
 	private void imprimirMenuMovimientos(Scanner escaner) {
 		
 		System.out.println("INGRESE EL ALIAS DE LA CUENTA DE LA CUAL DESEA CONSULTAR SUS MOVIMIENTOS");
 		
 		String alias = escaner.nextLine();
 		
-		if(cajero.comprobarExistenciaDeCuenta(alias)) {
-				
-			if(!cajero.obtenerMovimientos(alias).isEmpty()) {
-				
-				System.out.println("Los movimientos de esta cuenta son:\n");
-				
-				for(String movimiento: cajero.obtenerMovimientos(alias)) {
-					
-					String[] datosArray = movimiento.split(",");
-					
-					System.out.println("");
-					
-					if(datosArray.length == 6) {
-						
-						movimiento = String.format("-----------------------------------------------\nFecha:         Hora:\n%s    %s\n"
-								+ "\nTipo de operacion:\t%s\nAlias de la cuenta:\t%s\nImporte involucrado:\t%.2f\nSaldo final:\t\t%.2f\n"
-								+ "-----------------------------------------------"
-								
-								,datosArray[0],datosArray[1],datosArray[3],datosArray[2],Double.valueOf(datosArray[4]),Double.valueOf(datosArray[5]));
-					}
-					
-					else {
-						
-						movimiento = String.format("-----------------------------------------------\nFecha:         Hora:\n%s    %s\n"
-								+ "\nTipo de operacion:\t%s\nAlias de la cuenta a debitar:\t%s\nAlias de la cuenta a acreditar:\t%s\nImporte involucrado:\t%.2f\n"
-								+ "Saldo final cuenta debitada:\t\t%.2f\nSaldo final cuenta acreditada:\t\t%.2f\n"
-								+ "-----------------------------------------------"
-								
-								,datosArray[0],datosArray[1],datosArray[4],datosArray[2],datosArray[3],Double.valueOf(datosArray[5]),Double.valueOf(datosArray[6]),Double.valueOf(datosArray[7]));
-					}
-				}
-			}
-			else {
-				
-				System.out.println("No se realizaron movimientos en esta cuenta todavia");
-			}
+		if(cajero.comprobarExistenciaDeCuenta(alias) && !cajero.obtenerMovimientos(alias).isEmpty()) {
+
+			System.out.println("Los movimientos de esta cuenta son:\n");
 			
+			for(String movimiento: cajero.obtenerMovimientos(alias)) {
+				
+				String[] datosArray = movimiento.split(",");
+								
+				if(datosArray.length == 6) {
+					
+					movimiento = String.format("-----------------------------------------------\nFecha:         Hora:\n%s    %s\n"
+							+ "\nTipo de operacion:\t%s\nAlias de la cuenta:\t%s\nImporte involucrado:\t%.2f\nSaldo final:\t\t%.2f\n"
+							+ "-----------------------------------------------"
+							
+							,datosArray[0],datosArray[1],datosArray[3],datosArray[2],Double.valueOf(datosArray[4]),Double.valueOf(datosArray[5]));
+				}			 /*fecha          hora    tipo de operacion  alias                 importe                     saldo final*/
+				
+				else {
+					
+					movimiento = String.format("-----------------------------------------------\nFecha:         Hora:\n%s    %s\n"
+							+ "\nTipo de operacion:\t%s\nAlias de la cuenta a debitar:\t%s\nAlias de la cuenta a acreditar:\t%s\nImporte involucrado:\t%.2f\n"
+							+ "Saldo final cuenta debitada:\t\t%.2f\nSaldo final cuenta acreditada:\t\t%.2f\n"
+							+ "-----------------------------------------------"
+							
+							,datosArray[0],datosArray[1],datosArray[4],datosArray[2],datosArray[3],Double.valueOf(datosArray[5]),Double.valueOf(datosArray[6]),Double.valueOf(datosArray[7]));
+				}			 /*fecha          hora    tipo de operacion.aliasdebitado.aliasacreditado          importe                     saldo final debitada        saldo final acreditado*/
+				
+				System.out.println(movimiento);
+			}
 		}
+		else {
+			
+			System.out.println("No se realizaron movimientos en esta cuenta todavia");
+		}
+		
+		
 	}
 
+	/**
+	 * Muestra el saldo de la cuenta pedida por el usuario
+	 * @param escaner
+	 */
 	private void imprimirMenuConsultarSaldo(Scanner escaner){
-
-		
+	
 		generarSaltosDeLinea();
 
 		System.out.println("INGRESE EL ALIAS DE LA CUENTA QUE DESEA CONSULTAR EL SALDO");
 		String alias = escaner.nextLine();
 		
-		String moneda = cajero.obtenerCliente().obtenerCuenta(alias).getClass().getName().equals("CajaDeAhorroDolares")?"Dolares":"Pesos";
-		
-		if(cajero.comprobarExistenciaDeCuenta(alias)) {
-		
-			System.out.println(String.format("El saldo de su cuenta es:\n%.2f %s", cajero.consultarSaldo(alias),moneda));
+		/*Si el usuario trata de consultar un alias que no existe en su cuenta se lo informo*/
+		try {
+			
+			String moneda = cajero.obtenerCliente().obtenerCuenta(alias).getClass().getName().equals("CajaDeAhorroDolares")?"Dolares":"Pesos";
+			
+			if(cajero.comprobarExistenciaDeCuenta(alias)) {
+				
+				System.out.println(String.format("El saldo de su cuenta es:\n%.2f %s", cajero.consultarSaldo(alias),moneda));
+			}	
+			
+		} catch(NullPointerException e) {
+			
+			System.err.println("El alias de la cuenta ingresada no pertenece a tu tarjeta");
 		}	
 	}
 
+	/**
+	 * Muestra un menu para realizar una transferencia, preguntando la cuenta a debitar y a acreditar
+	 * @param escaner
+	 */
 	private void imprimirMenuTransferencia(Scanner escaner){
 
 		generarSaltosDeLinea();
@@ -193,7 +223,11 @@ public class Menu {
 			}
 		}
 	}
-
+	
+	/**
+	 * Muestra un menu preguntando la cuenta a la que se desea depositar saldo
+	 * @param escaner
+	 */
 	private void imprimirMenuDepositos(Scanner escaner){
 
 		generarSaltosDeLinea();
@@ -207,7 +241,11 @@ public class Menu {
 			cajero.depositarFondos(alias, monto);
 		}
 	}
-
+	
+	/**
+	 * Muestra un menu para realizar una compra de dolares, preguntando la cuenta a debitar y a acreditar
+	 * @param escaner
+	 */
 	private void imprimirMenuCompraDolares(Scanner escaner){
 
 		generarSaltosDeLinea();
@@ -229,6 +267,10 @@ public class Menu {
 		}	
 	}
 
+	/**
+	 * Muestra un menu preguntando la cuenta a la que se desea extraer un monto
+	 * @param escaner
+	 */
 	private void imprimirMenuExtracciones(Scanner escaner){
 
 		generarSaltosDeLinea();
@@ -251,6 +293,7 @@ public class Menu {
 				System.err.println("El saldo a introducir debe ser positivo");
 			}
 			
+			/*Muestro en consola cuantos billetes de cada denominacion se estan devolviendo*/
 			String[] billetes = cajero.obtenerBilletesAExtraer();
 						
 			if(billetes != null) {
@@ -264,23 +307,40 @@ public class Menu {
 			}	
 		}
 	}
-
+	
+	/**
+	 * Este metodo se llama siempre que quiero hacer una operacion como:
+	 * extraccion
+	 * deposito
+	 * compra de dolares
+	 * transferencia
+	 * 
+	 * Y se va a comportar de distinta manera segun la operacion que este realizando
+	 * Intenamente va a llamar a un metodo que me muestra opciones de montos para elegir
+	 * @param escaner
+	 * @param operacion
+	 * @return
+	 */
 	private int imprimirMenuMontos(Scanner escaner, String operacion) {
 		
 		boolean corte = true;
 		
 		int monto = 0;
-		
+
+		/*Imprimo el menu de los montos hasta que el usuario ingrese un monto correcto dependiendo de la operacion que esta realizando*/
+		 
 		while(corte) {
 			
 			monto = imprimirMenuMontos(escaner);
 			
 			if(monto > 0) {
 				
+				/*Solo me fijo si el monto ingresado es mayor a 0*/
 				if(operacion.equals("ComprarDolares") || operacion.equals("Transferencia")) {
 					
 					corte = !(monto > 0);
 				}
+				/*Solo puedo ingresar billetes mayores a 10 pesos*/
 				else if (operacion.equals("Deposito")){
 					
 					if(monto % 10 != 0) {
@@ -289,6 +349,7 @@ public class Menu {
 					}
 					corte = !(monto % 10 == 0);
 				}
+				/*Solo puedo extraer multiplos de 100*/
 				else if (operacion.equals("Extraccion")){
 					
 					if(monto % 100 != 0) {
@@ -303,11 +364,20 @@ public class Menu {
 		return monto;
 	}
 	
+	/**
+	 * Imprimo un espacio entre las llamadas de metodos para que no quede todo junto
+	 */
 	private void generarSaltosDeLinea() {
 
 		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	}
 
+	/**
+	 * Muestra opciones de montos a elegir, tambien permitiendo que el usuario elija un monto personalizado
+	 * (siempre dentro de los paramtros posibles)
+	 * @param escaner
+	 * @return
+	 */
 	private int imprimirMenuMontos(Scanner escaner) {
 		
 		int monto = 0;
