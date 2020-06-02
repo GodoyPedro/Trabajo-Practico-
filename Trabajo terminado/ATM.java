@@ -1,5 +1,7 @@
 import java.util.Scanner;
-
+/**
+ * Al instanciar esta clase, inicializamos el programa
+ */
 public class ATM {
 	
 	public static void main(String[] args){
