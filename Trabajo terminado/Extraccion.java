@@ -17,7 +17,7 @@ public class Extraccion extends Operacion {
 		// debe a que el cajero solo dispensa billetes de 1000, de 500 y de 100.
 		if (monto % 100 != 0) {
 
-			System.err.println("No se puede seleccionar montos que no sean multiplos de 100");
+			System.err.print("No se puede seleccionar montos que no sean multiplos de 100");
 		}
 
 		cuenta.retirarSaldo(monto);
